@@ -15,33 +15,31 @@
   <header class="site-header">
     <div class="container header-inner">
       <a href="dashboard.html" class="brand">QuizzBox</a>
-      <div class="timer" id="session-timer">⏱ 02:45 remaining</div>
-      <button class="btn submit" id="submit-btn" onclick="submitExam()">Submit Exam</button>
+      <div class="timer" id="session-timer">⏱ --:-- remaining</div>
+      <button class="btn submit" id="submit-btn">Soumettre →</button>
     </div>
   </header>
 
   <main class="session-page">
     <div class="container">
       <section class="question-head">
-        <span>Diagnostic Section</span>
-        <h1 id="question-indicator">Question 4 of 20</h1>
-        <a href="dashboard.html" class="quit" onclick="return confirm('Are you sure you want to quit? Your progress may be lost.')">Quit Evaluation</a>
+        <span id="section-label">Session en cours</span>
+        <h1 id="question-indicator">Chargement…</h1>
+        <a href="#" class="quit" id="quit-btn">Quitter l'évaluation</a>
       </section>
 
       <section class="question-card">
-        <p>Based on the presenting clinical symptoms of neuromuscular fatigue and the patient's pharmacological history, which diagnostic intervention is indicated as the primary confirmatory step?</p>
-
-        <div class="options">
-          <button class="option" onclick="selectOption(this)">A) Single-fiber electromyography (SFEMG)</button>
-          <button class="option" onclick="selectOption(this)">B) Anti-acetylcholine receptor (AChR) antibody assay</button>
-          <button class="option" onclick="selectOption(this)">C) Repetitive nerve stimulation (RNS) studies</button>
-          <button class="option" onclick="selectOption(this)">D) Serial magnetic resonance imaging of the mediastinum</button>
-        </div>
+        <p id="question-text">Chargement de la question…</p>
+        <div class="options" id="options-container"></div>
+        <div id="session-message" style="margin-top:1rem;color:#dc2626;font-weight:700;"></div>
       </section>
 
       <section class="progress-card">
-        <div class="progress-info"><span>Session Progress</span><strong>20% Complete</strong></div>
-        <div class="progress-bar"><div style="width: 20%;"></div></div>
+        <div class="progress-info">
+          <span>Session Progress</span>
+          <strong id="progress-text">0% Complete</strong>
+        </div>
+        <div class="progress-bar"><div id="progress-bar-fill"></div></div>
       </section>
     </div>
   </main>
@@ -53,46 +51,206 @@
     </div>
   </footer>
 
-  <script>
-    // UX Interactivity for Options
-    function selectOption(btn) {
-      document.querySelectorAll('.option').forEach(el => el.classList.remove('selected'));
-      btn.classList.add('selected');
+  <script type="module">
+    import api from './js/api.js';
+
+    // ── Auth check ──────────────────────────────────────────────────────────
+    const token = localStorage.getItem('quizzbox_token');
+    if (!token) {
+      window.location.replace('login.html');
+      throw new Error('Not authenticated');
     }
 
-    // Mock Timer Logic
-    let timeLeft = 165; // 2 mins 45 secs
-    const timerDisplay = document.getElementById('session-timer');
-    
-    const interval = setInterval(() => {
-      timeLeft--;
-      if(timeLeft <= 0) {
-        clearInterval(interval);
-        submitExam();
-      } else {
-        const mins = Math.floor(timeLeft / 60).toString().padStart(2, '0');
-        const secs = (timeLeft % 60).toString().padStart(2, '0');
-        timerDisplay.textContent = `⏱ ${mins}:${secs} remaining`;
-        
-        if (timeLeft <= 30) {
-          timerDisplay.classList.add('warning');
+    const params       = new URLSearchParams(window.location.search);
+    const evaluationId = params.get('id') || sessionStorage.getItem('current_eval_id');
+
+    const questionTextEl    = document.getElementById('question-text');
+    const optionsContainer  = document.getElementById('options-container');
+    const progressText      = document.getElementById('progress-text');
+    const progressBarFill   = document.getElementById('progress-bar-fill');
+    const sessionMessage    = document.getElementById('session-message');
+    const timerEl           = document.getElementById('session-timer');
+    const questionIndicator = document.getElementById('question-indicator');
+
+    let sessionId        = null;
+    let selectedOptionId = null;
+    let timerInterval    = null;
+
+    // ── Timer ───────────────────────────────────────────────────────────────
+    function stopTimer() {
+      if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+    }
+
+    function startTimer(seconds) {
+      stopTimer();
+      let remaining = seconds;
+      const tick = () => {
+        const m = String(Math.floor(remaining / 60)).padStart(2, '0');
+        const s = String(remaining % 60).padStart(2, '0');
+        timerEl.textContent = `⏱ ${m}:${s} remaining`;
+        timerEl.classList.toggle('warning', remaining <= 10);
+        if (remaining <= 0) { stopTimer(); onTimeout(); }
+        remaining--;
+      };
+      tick();
+      timerInterval = setInterval(tick, 1000);
+    }
+
+    async function onTimeout() {
+      sessionMessage.textContent = '⏰ Temps écoulé — passage à la suite.';
+      // Can't submit without selection — just load next
+      await loadCurrentQuestion();
+    }
+
+    // ── Progress ────────────────────────────────────────────────────────────
+    function setProgress(index, total) {
+      const percent = total ? Math.round(((index + 1) / total) * 100) : 0;
+      progressText.textContent = `${percent}% Complete`;
+      progressBarFill.style.width = `${percent}%`;
+    }
+
+    // ── Render ──────────────────────────────────────────────────────────────
+    function renderQuestion(qData) {
+      if (!qData || !qData.question) {
+        questionTextEl.textContent = 'Aucune question disponible.';
+        return;
+      }
+      selectedOptionId = null;
+      sessionMessage.textContent = '';
+      questionTextEl.textContent = qData.question.text;
+
+      optionsContainer.innerHTML = '';
+      qData.question.options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = 'option';
+        btn.textContent = opt.text;
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.option').forEach(el => el.classList.remove('selected'));
+          btn.classList.add('selected');
+          selectedOptionId = opt.id;
+        });
+        optionsContainer.appendChild(btn);
+      });
+
+      setProgress(qData.currentIndex, qData.totalQuestions);
+      questionIndicator.textContent =
+        `Question ${qData.currentIndex + 1} sur ${qData.totalQuestions}`;
+
+      startTimer(qData.timeLimit || 30);
+    }
+
+    // ── Error redirect ──────────────────────────────────────────────────────
+    function errorRedirect(msg) {
+      sessionMessage.textContent = msg;
+      sessionStorage.removeItem('current_session_id');
+      setTimeout(() => window.location.replace('join.html'), 2800);
+    }
+
+    // ── Load current question ───────────────────────────────────────────────
+    async function loadCurrentQuestion() {
+      try {
+        const qData = await api.session.getCurrentQuestion(sessionId);
+        renderQuestion(qData);
+      } catch (err) {
+        stopTimer();
+        const msg = err.message || '';
+        if (msg === 'No more questions' || msg === 'Session is already completed') {
+          sessionStorage.removeItem('current_session_id');
+          window.location.replace('results.html?session=' + sessionId);
+        } else {
+          console.error('loadCurrentQuestion:', err);
+          sessionMessage.textContent = msg || 'Impossible de charger la question.';
         }
       }
-    }, 1000);
-
-    // Submit action
-    function submitExam() {
-      const btn = document.getElementById('submit-btn');
-      btn.textContent = 'Submitting...';
-      btn.disabled = true;
-      btn.style.opacity = '0.7';
-      clearInterval(interval);
-      
-      // Simulate network request
-      setTimeout(() => {
-        window.location.replace('results.html');
-      }, 1000);
     }
+
+    // ── Submit answer ───────────────────────────────────────────────────────
+    async function submitCurrentAnswer() {
+      if (!selectedOptionId) {
+        sessionMessage.textContent = 'Sélectionnez une option avant de soumettre.';
+        return;
+      }
+      sessionMessage.textContent = '';
+      stopTimer();
+
+      try {
+        const result = await api.session.submitAnswer(sessionId, selectedOptionId);
+        if (result && result.result) {
+          sessionStorage.removeItem('current_session_id');
+          window.location.replace('results.html?session=' + sessionId);
+          return;
+        }
+        await loadCurrentQuestion();
+      } catch (err) {
+        console.error('submitAnswer:', err);
+        sessionMessage.textContent = err.message || "Impossible d'envoyer la réponse.";
+        // Restart timer so the user can retry
+        startTimer(30);
+      }
+    }
+
+    // ── Start session ───────────────────────────────────────────────────────
+    async function startSession() {
+      // Resume an in-progress session
+      const cached = sessionStorage.getItem('current_session_id');
+      if (cached) {
+        sessionId = cached;
+        try {
+          await loadCurrentQuestion();
+          return;
+        } catch (err) {
+          // Stale session — fall through to create a new one
+          sessionStorage.removeItem('current_session_id');
+        }
+      }
+
+      if (!evaluationId) {
+        errorRedirect("Évaluation introuvable. Retour à l'accueil…");
+        return;
+      }
+
+      // Dev mock
+      if (evaluationId.startsWith('mock-')) {
+        sessionId = 'mock-session-' + Date.now();
+        sessionStorage.setItem('current_session_id', sessionId);
+        renderQuestion({
+          question: { id: 'q1', text: 'Démonstration — aucune question réelle', options: [
+            { id: 'o1', text: 'Option A' }, { id: 'o2', text: 'Option B' }
+          ]},
+          timeLimit: 30, currentIndex: 0, totalQuestions: 1
+        });
+        return;
+      }
+
+      try {
+        questionTextEl.textContent = 'Démarrage de la session…';
+        const started = await api.session.start(evaluationId);
+        sessionId = started.id;
+        sessionStorage.setItem('current_session_id', sessionId);
+        await loadCurrentQuestion();
+      } catch (err) {
+        console.error('startSession:', err);
+        errorRedirect(err.message || 'Impossible de démarrer la session.');
+      }
+    }
+
+    // ── Listeners ───────────────────────────────────────────────────────────
+    document.getElementById('submit-btn').addEventListener('click', (e) => {
+      e.preventDefault();
+      submitCurrentAnswer();
+    });
+
+    document.getElementById('quit-btn').addEventListener('click', (e) => {
+      e.preventDefault();
+      if (confirm('Êtes-vous sûr de vouloir quitter ? Votre progression sera perdue.')) {
+        stopTimer();
+        sessionStorage.removeItem('current_session_id');
+        window.location.href = 'dashboard.html';
+      }
+    });
+
+    // ── Boot ────────────────────────────────────────────────────────────────
+    startSession();
   </script>
 </body>
 </html>

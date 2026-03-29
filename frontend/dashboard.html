@@ -21,19 +21,19 @@
       </div>
       <nav>
         <a class="active" href="dashboard.html">Overview</a>
-        <a href="#">My Evaluations</a>
-        <a href="#">Analytics</a>
+        <a id="my-evaluations-link" href="my-evaluations.html">My Evaluations</a>
+        <a id="analytics-link" href="results.html">Analytics</a>
       </nav>
       <div class="side-actions">
         <button class="btn primary" onclick="window.location.href='create.html'">+ New Assessment</button>
-        <a href="#">Help Center</a>
+        <a id="help-center-link" href="#">Help Center</a>
         <a href="#" id="logout-btn">Log Out</a>
       </div>
     </aside>
 
     <main class="main-area">
       <header class="top-bar">
-        <input placeholder="Search evaluations..." />
+        <input id="search-input" placeholder="Search evaluations..." />
         <div class="top-links"><a href="dashboard.html" class="active">Dashboard</a><a href="create.html">Create</a><a href="join.html">Join</a></div>
         <div class="top-user" id="user-initial">U</div>
       </header>
@@ -54,11 +54,11 @@
 
       <section class="insight-banner">
         <h2>Usage Insights</h2>
-        <p>Your clinical evaluations have reached over 1,200 students this semester with a 94% completion rate.</p>
+        <p>Suivez vos évaluations en temps réel et prenez des actions rapides.</p>
         <div class="stats">
-          <div><strong>12</strong><span>Active Tests</span></div>
-          <div><strong>458</strong><span>Submissions</span></div>
-          <div class="avg-diff"><strong>8.4</strong><span>Avg. Difficulty</span></div>
+          <div><strong id="total-evals">0</strong><span>Total Evaluations</span></div>
+          <div><strong id="shared-evals">0</strong><span>Shared</span></div>
+          <div class="avg-diff"><strong id="private-evals">0</strong><span>Private</span></div>
         </div>
       </section>
 
@@ -87,6 +87,8 @@
         }
 
         const userData = await api.auth.getProfile();
+        // Persist fresh normalized user to localStorage
+        localStorage.setItem('quizzbox_user', JSON.stringify(userData));
         updateUserUI(userData);
         
         await fetchEvaluations();
@@ -106,30 +108,67 @@
       document.getElementById('user-greeting').textContent = nameParts[0];
     }
 
-    async function fetchEvaluations() {
+    async function fetchEvaluations(query = '') {
       try {
         const evals = await api.evaluations.list();
         const container = document.getElementById('evaluations-container');
-        
-        if (evals && evals.length > 0) {
-          evals.forEach(ev => {
-            const el = document.createElement('article');
-            el.className = 'eval-card private';
-            
-            el.innerHTML = `
-              <span class="badge">Private</span>
-              <h3>${ev.title}</h3>
-              <p>${ev.description || 'Custom clinical evaluation module.'}</p>
-              <div class="code"><strong>${ev.timePerQuestion ? ev.timePerQuestion + ' secs/Q' : 'Untimed'}</strong></div>
-              <div class="card-actions"><a href="#">Edit</a><a href="results.html">Results</a><span>Draft</span></div>
-            `;
-            // Insert before the "Create New" card
-            container.insertBefore(el, container.lastElementChild);
-          });
+        container.innerHTML = '';
+
+        // Add create card first
+        const createCard = document.createElement('article');
+        createCard.className = 'eval-card create-new';
+        createCard.onclick = () => window.location.href = 'create.html';
+        createCard.innerHTML = \`
+          <div class="new-icon">+</div>
+          <h3>Create Evaluation</h3>
+          <p>Begin building a new clinical assessment or exam session.</p>
+        \`;
+        container.appendChild(createCard);
+
+        if (!evals || evals.length === 0) {
+          return updateDashboardStats(0, 0, 0);
         }
+
+        const filtered = evals.filter(ev => {
+          const title = (ev.title || '').toLowerCase();
+          const desc = (ev.description || '').toLowerCase();
+          return title.includes(query.toLowerCase()) || desc.includes(query.toLowerCase());
+        });
+
+        let sharedCount = 0;
+        let privateCount = 0;
+
+        filtered.forEach(ev => {
+          const isShared = ev.visibility === 'SHARED';
+          if (isShared) sharedCount += 1; else privateCount += 1;
+
+          const el = document.createElement('article');
+          el.className = \`eval-card \${isShared ? 'shared' : 'private'}\`;
+          el.innerHTML = \`
+            <span class="badge">\${isShared ? 'Shared' : 'Private'}</span>
+            <h3>\${ev.title}</h3>
+            <p>\${ev.description || 'Custom clinical evaluation module.'}</p>
+            <div class="code"><strong>\${ev._count?.questions ?? 0} questions · \${ev.timePerQuestion ?? '--'}s/Q</strong></div>
+            \${isShared ? \`<div class="code">Code : <strong>\${ev.accessCode}</strong></div>\` : ''}
+            <div class="card-actions">
+              <a href="create.html?edit=\${ev.id}">Edit</a>
+              <a href="results.html?evaluationId=\${ev.id}">Results</a>
+              \${isShared ? \`<a href="join.html?code=\${ev.accessCode}">Join</a>\` : ''}
+            </div>
+          \`;
+          container.appendChild(el);
+        });
+
+        updateDashboardStats(filtered.length, sharedCount, privateCount);
       } catch (err) {
-        console.error("Failed to fetch evaluations", err);
+        console.error('Failed to fetch evaluations', err);
       }
+    }
+
+    function updateDashboardStats(total, shared, privateCount) {
+      document.getElementById('total-evals').textContent = total;
+      document.getElementById('shared-evals').textContent = shared;
+      document.getElementById('private-evals').textContent = privateCount;
     }
 
     // Logout logic
@@ -138,6 +177,25 @@
       localStorage.removeItem('quizzbox_token');
       localStorage.removeItem('quizzbox_user');
       window.location.replace('login.html');
+    });
+
+    document.getElementById('my-evaluations-link').addEventListener('click', (e) => {
+      e.preventDefault();
+      window.location.href = 'my-evaluations.html';
+    });
+
+    document.getElementById('analytics-link').addEventListener('click', (e) => {
+      e.preventDefault();
+      window.location.href = 'results.html';
+    });
+
+    document.getElementById('help-center-link').addEventListener('click', (e) => {
+      e.preventDefault();
+      window.location.href = 'help.html';
+    });
+
+    document.getElementById('search-input').addEventListener('input', (e) => {
+      fetchEvaluations(e.target.value);
     });
 
     initDashboard();

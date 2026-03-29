@@ -108,9 +108,11 @@
           window.location.href = `session.html?id=${evalId}`;
         } else {
           // Mock successful join if API is just a stub right now
-          console.log("Mock join succcess for code:", code);
-          sessionStorage.setItem('current_session', 'mock-session-id');
-          window.location.href = `session.html?code=${code}`;
+          console.log("Mock join success for code:", code);
+          // For mock, create a fake evalId based on the code
+          const mockEvalId = 'mock-' + code.replace(/[^a-zA-Z0-9]/g, '');
+          sessionStorage.setItem('current_eval_id', mockEvalId);
+          window.location.href = `session.html?id=${mockEvalId}`;
         }
 
       } catch (err) {

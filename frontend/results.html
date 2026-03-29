@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>QuizzBox - Results</title>
+  <title>QuizzBox - Résultats</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -26,47 +26,13 @@
   </header>
 
   <main class="container results-page">
-    <section class="top-summary">
-      <span class="badge">Evaluation Complete</span>
-      <h1 id="result-title">Excellent performance, User!</h1>
-      <p>Your results for <strong>Neurological Assessment Protocol 4.2</strong> are ready. You've demonstrated exceptional mastery today.</p>
-    </section>
-
-    <section class="stats-grid">
-      <article class="card score-card">
-        <div class="circle-score"><strong>18</strong><span>/20</span></div>
-        <small>90th Percentile</small>
-      </article>
-      <article class="card stat-card">
-        <small>Total Duration</small>
-        <h2>14:32</h2>
-      </article>
-      <article class="card stat-card">
-        <small>Accuracy Grade</small>
-        <h2>Precision High</h2>
-      </article>
-      <article class="card answer-card">
-        <div><strong>Correct</strong><span>18</span></div>
-        <div><strong>Incorrect</strong><span>02</span></div>
-        <div class="bonus">+16 Points</div>
-      </article>
-    </section>
-
-    <section class="actions-row">
-      <button class="btn primary">Review Answers</button>
-      <a href="dashboard.html" class="btn outline">Back to Dashboard</a>
-    </section>
-
-    <section class="insight-block">
-      <div class="insight-text">
-        <span>QuizzBox Insight</span>
-        <blockquote>“Your diagnostic speed in the 'Critical Care' module has increased by 15% since the last session. Remarkable progress.”</blockquote>
-        <small>AI Learning Assistant</small>
+    <!-- Dynamic content injected by JS -->
+    <div id="results-content">
+      <div class="loading-overlay">
+        <div class="spinner"></div>
+        <span>Chargement des résultats…</span>
       </div>
-      <div class="insight-chart">
-        <div class="chart-visual">[Distribution Graph Placeholder]</div>
-      </div>
-    </section>
+    </div>
   </main>
 
   <footer class="site-footer">
@@ -77,20 +43,139 @@
   </footer>
 
   <script type="module">
-    // Display Username logic
+    import api from './js/api.js';
+
+    // ── User UI ─────────────────────────────────────────────────────────────
     const cachedUser = localStorage.getItem('quizzbox_user');
+    let firstName = 'Étudiant';
     if (cachedUser) {
       try {
         const user = JSON.parse(cachedUser);
-        const nameParts = user.name ? user.name.split(' ') : ['User'];
-        const firstName = nameParts[0];
-        
+        const parts = user.name ? user.name.split(' ') : ['Étudiant'];
+        firstName = parts[0];
         document.getElementById('user-initial').textContent = firstName.charAt(0).toUpperCase();
-        document.getElementById('result-title').textContent = `Excellent performance, ${firstName}!`;
-      } catch (e) {
-        console.error("Failed parsing user UI data", e);
+      } catch (e) { /* ignore */ }
+    }
+
+    // ── Get sessionId from URL ──────────────────────────────────────────────
+    const params    = new URLSearchParams(window.location.search);
+    const sessionId = params.get('session');
+    const content   = document.getElementById('results-content');
+
+    function renderError(msg) {
+      content.innerHTML = `
+        <div class="error-box">
+          <p>😕 ${msg}</p>
+          <a href="dashboard.html" class="btn outline" style="margin-top:1rem;display:inline-flex;">
+            ← Retour au Dashboard
+          </a>
+        </div>`;
+    }
+
+    function getGrade(score) {
+      if (score >= 90) return { label: 'Excellent 🏆', insight: 'Performance exceptionnelle ! Vous maîtrisez parfaitement ce module.' };
+      if (score >= 75) return { label: 'Très bien 👍', insight: 'Bonne maîtrise du contenu. Quelques révisions ciblées vous mèneront à l\'excellence.' };
+      if (score >= 60) return { label: 'Passable ✅',   insight: 'Vous avez les bases. Revoyez les questions manquées pour consolider vos acquis.' };
+      return                  { label: 'À revoir 📚',  insight: 'Ce module nécessite de la révision. Ne vous découragez pas — continuez à pratiquer !' };
+    }
+
+    function buildBars(score) {
+      // Simple visual breakdown bar chart
+      const bars = [
+        Math.min(score + 10, 100),
+        score,
+        Math.max(score - 8, 0),
+        Math.max(score - 20, 0),
+        Math.max(score - 30, 0),
+      ];
+      return bars.map(h => `<div class="chart-bar" style="height:${h}%"></div>`).join('');
+    }
+
+    async function loadResults() {
+      if (!sessionId) {
+        renderError('Aucune session spécifiée. Revenez depuis une évaluation complète.');
+        return;
+      }
+
+      try {
+        const result = await api.session.getResult(sessionId);
+        // result = { score, totalQuestions, correctAnswersCount }
+
+        const score    = result.score           ?? 0;
+        const total    = result.totalQuestions  ?? 0;
+        const correct  = result.correctAnswersCount ?? 0;
+        const wrong    = total - correct;
+        const { label, insight } = getGrade(score);
+
+        content.innerHTML = `
+          <section class="top-summary">
+            <span class="badge">Évaluation terminée</span>
+            <h1 id="result-title">Bravo, ${firstName} !</h1>
+            <p>Voici vos résultats détaillés pour cette session QuizzBox.</p>
+          </section>
+
+          <section class="stats-grid">
+            <article class="card score-card">
+              <div class="circle-score">
+                <strong>${correct}</strong><span>/${total}</span>
+              </div>
+              <div class="score-label">${label}</div>
+            </article>
+
+            <article class="card stat-card">
+              <small>Score global</small>
+              <h2>${score}%</h2>
+            </article>
+
+            <article class="card stat-card">
+              <small>Questions totales</small>
+              <h2>${total}</h2>
+            </article>
+
+            <article class="card answer-card">
+              <div class="row correct">
+                <strong>Correctes</strong>
+                <span class="correct-val">✓ ${correct}</span>
+              </div>
+              <div class="row incorrect">
+                <strong>Incorrectes</strong>
+                <span class="incorrect-val">✗ ${wrong}</span>
+              </div>
+              <div class="score-pct">${score}% de réussite</div>
+            </article>
+          </section>
+
+          <section class="actions-row">
+            <a href="join.html" class="btn primary">Refaire une évaluation</a>
+            <a href="dashboard.html" class="btn outline">← Retour au Dashboard</a>
+          </section>
+
+          <section class="insight-block">
+            <div class="insight-text">
+              <span>QuizzBox Insight</span>
+              <blockquote>"${insight}"</blockquote>
+              <small>Analyse automatique de vos résultats</small>
+            </div>
+            <div class="insight-chart">
+              <div class="chart-bar-wrap">
+                ${buildBars(score)}
+              </div>
+            </div>
+          </section>`;
+
+      } catch (err) {
+        console.error('getResult error:', err);
+        if (err.message && err.message.toLowerCase().includes('not completed')) {
+          renderError('La session n\'est pas encore terminée. Finissez le test pour voir vos résultats.');
+        } else if (err.message && err.message.toLowerCase().includes('not found')) {
+          renderError('Session introuvable. Le lien est peut-être expiré.');
+        } else {
+          renderError(err.message || 'Impossible de charger les résultats.');
+        }
       }
     }
+
+    loadResults();
   </script>
 </body>
 </html>

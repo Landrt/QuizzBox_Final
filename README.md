@@ -121,7 +121,59 @@ curl -X POST http://localhost:3000/auth/login \
    - `POST /evaluation` pour créer un quiz
    - `POST /session` pour commencer une session
 
-### 3. Vérification de la base SQLite
+### 3. Créer des évaluations manuelles
+
+#### Via l'interface web (recommandé)
+
+1. **Connectez-vous** sur `http://localhost:8080/login.html`
+2. **Allez sur "Create"** - la page s'ouvre en mode "Manual" par défaut
+3. **Configurez votre évaluation** :
+   - Titre de l'évaluation
+   - Visibilité : "Private" (vous seul) ou "Shared" (avec code d'accès)
+   - Temps par question (30s, 45s, 60s)
+
+#### Option 1 : Ajouter des questions manuellement
+- Cliquez sur "+ Add Question" pour ajouter des questions une par une
+- Remplissez le texte de la question et les réponses
+- Cochez la bonne réponse pour chaque question
+
+#### Option 2 : Import JSON (rapide pour plusieurs questions)
+- Cliquez sur "📄 Import JSON"
+- Collez vos questions dans ce format :
+
+```json
+[
+  {
+    "text": "Quelle est la capitale de la France ?",
+    "answers": [
+      {"text": "Paris", "isCorrect": true},
+      {"text": "Londres", "isCorrect": false},
+      {"text": "Berlin", "isCorrect": false}
+    ]
+  },
+  {
+    "text": "Combien fait 2 + 2 ?",
+    "answers": [
+      {"text": "3", "isCorrect": false},
+      {"text": "4", "isCorrect": true},
+      {"text": "5", "isCorrect": false}
+    ]
+  }
+]
+```
+
+- Cliquez sur "Import Questions" - validation automatique
+- Sauvegardez l'évaluation
+
+> **💡 Conseil** : Chaque question doit avoir au moins 2 réponses, dont une correcte (`"isCorrect": true`)
+
+#### Partager votre évaluation
+- Choisissez "Shared (access code)" lors de la création
+- Après sauvegarde, vous recevrez un code d'accès de 6 caractères
+- Partagez ce code avec vos participants
+- Ils pourront rejoindre via `http://localhost:8080/join.html`
+
+### 4. Vérification de la base SQLite
 
 - Fichier `dev.db` créé à la racine.
 - `.env` : `DATABASE_URL="file:./dev.db"`

@@ -88,4 +88,24 @@ export class EvaluationService {
     // We could return the evaluation details so the frontend can then call /sessions/start
     return evaluation;
   }
+
+  async deleteEvaluation(userId: string, id: string) {
+    const evaluation = await prisma.evaluation.findUnique({
+      where: { id },
+    });
+
+    if (!evaluation) {
+      throw new Error('Evaluation not found');
+    }
+
+    if (evaluation.creatorId !== userId) {
+      throw new Error('Only the creator can delete this evaluation');
+    }
+
+    await prisma.evaluation.delete({
+      where: { id },
+    });
+
+    return { success: true };
+  }
 }

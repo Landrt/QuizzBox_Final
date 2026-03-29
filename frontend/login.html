@@ -92,7 +92,11 @@
 
   <script type="module">
     import api from './js/api.js';
-    
+
+    // Already logged in? Go to dashboard directly
+    if (localStorage.getItem('quizzbox_token')) {
+      window.location.replace('dashboard.html');
+    }
     document.getElementById('login-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       
@@ -108,13 +112,12 @@
         
         const response = await api.auth.login({ email, password });
         
-        // Save token
+        // Save token + normalized user (api.js already sets user.name from fullName)
         localStorage.setItem('quizzbox_token', response.token);
         if (response.user) {
           localStorage.setItem('quizzbox_user', JSON.stringify(response.user));
         }
         
-        // Redirect to a placeholder dashboard for now
         window.location.href = 'dashboard.html';
       } catch (err) {
         errorDiv.textContent = err.message || 'Invalid email or password.';

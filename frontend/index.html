@@ -154,7 +154,7 @@
       </nav>
       <div class="actions flex gap-4">
         <button class="btn btn-outline">Support</button>
-        <a href="login.html" class="btn btn-primary">Profile</a>
+        <a href="login.html" class="btn btn-primary" id="profile-btn">Profile</a>
       </div>
     </div>
   </header>
@@ -250,5 +250,14 @@
       </div>
     </div>
   </footer>
+<script>
+    // Redirect Profile button to dashboard if already logged in
+    const token = localStorage.getItem('quizzbox_token');
+    const profileBtn = document.getElementById('profile-btn');
+    if (token && profileBtn) {
+      profileBtn.href = 'dashboard.html';
+      profileBtn.textContent = 'Dashboard';
+    }
+  </script>
 </body>
 </html>

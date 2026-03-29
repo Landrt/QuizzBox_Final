@@ -68,4 +68,17 @@ export class EvaluationController {
       res.status(400).json({ message: error.message });
     }
   }
+
+  async deleteEvaluation(req: AuthRequest, res: Response) {
+    try {
+      const userId = req.user?.userId;
+      if (!userId) return res.status(401).json({ message: 'Unauthorized' });
+
+      const id = req.params.id as string;
+      const result = await evaluationService.deleteEvaluation(userId, id);
+      res.status(200).json(result);
+    } catch (error: any) {
+      res.status(400).json({ message: error.message });
+    }
+  }
 }

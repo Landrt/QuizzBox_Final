@@ -42,14 +42,19 @@ const api = {
   },
 
   auth: {
-    login(credentials) {
-      return api.request('/auth/login', {
+    async login(credentials) {
+      const res = await api.request('/auth/login', {
         method: 'POST',
         body: JSON.stringify(credentials),
       });
+      // Normalize fullName → name for all frontend pages
+      if (res.user && res.user.fullName) {
+        res.user.name = res.user.fullName;
+      }
+      return res;
     },
-    register(userData) {
-      return api.request('/auth/register', {
+    async register(userData) {
+      const res = await api.request('/auth/register', {
         method: 'POST',
         body: JSON.stringify({
           fullName: userData.name,
@@ -57,9 +62,18 @@ const api = {
           password: userData.password,
         }),
       });
+      if (res.user && res.user.fullName) {
+        res.user.name = res.user.fullName;
+      }
+      return res;
     },
-    getProfile() {
-      return api.request('/auth/profile');
+    async getProfile() {
+      const user = await api.request('/auth/profile');
+      // Normalize fullName → name
+      if (user && user.fullName) {
+        user.name = user.fullName;
+      }
+      return user;
     }
   },
 
@@ -76,13 +90,61 @@ const api = {
         body: JSON.stringify(data),
       });
     },
+    generateCode(evaluationId) {
+      return api.request(`/evaluation/${evaluationId}/generate-code`, {
+        method: 'POST',
+      });
+    },
     join(code) {
-      // Formater le code sans tiret pour coller au length(6) du backend (ex: XXX-XXX -> XXXXXX)
       const cleanCode = code.replace(/-/g, '');
       return api.request('/evaluation/join', {
         method: 'POST',
         body: JSON.stringify({ accessCode: cleanCode }),
       });
+    },
+    delete(id) {
+      return api.request(`/evaluation/${id}`, {
+        method: 'DELETE',
+      });
+    }
+  },
+
+  session: {
+    start(evaluationId) {
+      return api.request('/session/start', {
+        method: 'POST',
+        body: JSON.stringify({ evaluationId }),
+      });
+    },
+    getCurrentQuestion(sessionId) {
+      return api.request(`/session/${sessionId}/current-question`);
+    },
+    submitAnswer(sessionId, optionId) {
+      return api.request(`/session/${sessionId}/answer`, {
+        method: 'POST',
+        body: JSON.stringify({ optionId }),
+      });
+    },
+    getResult(sessionId) {
+      return api.request(`/session/${sessionId}/result`);
+    }
+  },
+
+  questions: {
+    create(evaluationId, questionData) {
+      return api.request(`/evaluation/${evaluationId}/questions`, {
+        method: 'POST',
+        body: JSON.stringify({
+          text: questionData.text,
+          options: questionData.answers.map(ans => ({
+            text: ans.text,
+            isCorrect: ans.isCorrect,
+          })),
+        }),
+      });
+    },
+    list(evaluationId) {
+      return api.request(`/evaluation/${evaluationId}/questions`);
     }
   }
 };
