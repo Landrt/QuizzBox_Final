@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QuizzBox - Create Evaluation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+:root {--bg: #f6f7fb;--surface: #ffffff;--text: #0b1222;--muted: #6b7280;--border: #e9edf4;--primary: #f97316;--primary-dark: #dd6207;--shadow: 0 12px 32px rgba(15, 23, 42, 0.14);} * {box-sizing: border-box;} body {margin: 0;min-height: 100vh;font-family: 'Inter', system-ui, -apple-system, Segoe UI, sans-serif;background: var(--bg);color: var(--text);} .container {width: min(1180px, calc(100% - 2rem)); margin: 0 auto;} .page-header {background: #fff; border-bottom: 1px solid var(--border);} .header-inner {display: flex; align-items: center; justify-content: space-between; height: 72px;} .brand {font-weight: 800; font-size: 1.35rem; color: var(--primary); text-decoration: none;} .top-nav {display: flex; gap: 1.1rem;} .top-nav a {text-decoration: none; color: #243040; font-weight: 600;} .top-nav a.active {color: var(--primary);} .profile {font-size: 1.1rem; width: 36px; height: 36px; border-radius: 50%; background: #fff3e3; color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: bold;} .create-top {padding: 1.75rem 0;} .create-top h1 {margin: 0; font-size: 2.3rem;} .create-top p {margin:.5rem 0 0; color: var(--muted);} .mode-panel {display:grid; grid-template-columns: 140px 140px; gap:.8rem; margin:1.2rem 0;} .mode-card {background:#fff; border:1px solid #dbe7f8; border-radius:.8rem; padding:.7rem 1rem; font-weight:700; cursor:pointer; text-align:center;} .mode-card.active {background: linear-gradient(125deg, #fffafb, #fff); border-color: var(--primary); color: var(--primary);} .grid-panel {display:grid; grid-template-columns: 298px 1fr; gap:1rem; margin-bottom: 1rem;} .mode-content {display:none;} .mode-content.active {display:block;} .config-card, .upload-card {background: #fff; border:1px solid var(--border); border-radius: 1rem; padding: 1.25rem;} .config-card h3 {margin:0; font-size: .95rem; letter-spacing:.08em; text-transform: uppercase; color: #475569;} .config-card label {display:block; font-size:.84rem; color:#667085; margin-top:1.2rem;} .range {width:100%; margin: .35rem 0; accent-color: var(--primary);} .range-values {display:flex; justify-content:space-between; color:#94a3b8; font-size:.78rem;} select, input[type=text] {width:100%; padding:.6rem .7rem; border:1px solid #d8e1ef; border-radius:.6rem; background:#fbfcff; margin-top: 0.35rem;} .upload-card {display:flex; flex-direction:column; align-items:center; text-align:center; gap:.6rem; min-height:252px; justify-content:center;} .upload-icon {width:58px; height:58px; border-radius:50%; background: #fff3e3; display:grid; place-items:center; font-size:1.4rem; border:1px solid #ffd8b8;} .upload-card h2 {margin: .25rem 0; font-size:1.25rem;} .upload-card p {margin:0; color:#64748b; font-size:.95rem;} .btn {border:none; border-radius:.65rem; padding:.68rem 1.15rem; font-weight:700; cursor:pointer;} .btn.primary {background: linear-gradient(120deg, var(--primary), #ff7a1f); color:#fff;} .btn.light {background: var(--bg); color: #475569; border: 1px solid var(--border);} .btn.secondary {background: #e9effa; color: #3f4f74;} .upload-hint {font-size:.78rem; color:#f97316; margin-top: 0.5rem;} .status-card {margin:0 0 1.1rem; background:#fff; border-radius:.75rem; border:1px solid #ffe2c0; padding:.72rem 1rem; display:flex; align-items:center; gap:.7rem;} .status-card span {font-size:.83rem; color:#f97316;} .status-card strong {flex:1;} .status-card .waiting {font-size:.78rem; text-transform:uppercase; color:#ff7c1a;} .editor-platform {background:#fff; border:1px solid var(--border); border-radius:1rem; padding:1.5rem;} .editor-header {display:flex; justify-content:space-between; align-items:center; gap:.8rem;} .progress {display:flex; flex-direction:column; gap:.35rem; font-size:.74rem; color:#64748b; font-weight: 500;} .bar {width: 260px; height:6px; background:#e4ecf7; border-radius:999px; overflow:hidden;} .bar > div {width: 36%; height:100%; background: var(--primary);} .actions {display:flex; gap:.65rem;} .question-card {margin-top:1.5rem; background:#fbfdff; border:1px solid #dbe7f8; border-radius:.92rem; padding:1.5rem;} .question-top {display:flex; gap: .75rem; font-size:.73rem; text-transform:uppercase; color:#64748b; font-weight:700; margin-bottom:.8rem;} .question-top span:first-child {background:#fff4dd; color:#f97316; border-radius:7px; padding:.2rem .58rem;} .question-top span:last-child {background:#e9effa; color:#3f4f74; border-radius:7px; padding:.2rem .58rem;} .question-card label {display:block; font-size:.8rem; color:#4f5f7f; margin-bottom:.5rem; font-weight: 600;} .question-card textarea, .question-card input[type=text] {width:100%; border:1px solid #d7e1ee; border-radius:.68rem; padding:.74rem; resize:vertical; background:#f8fbff; font-family: 'Inter', sans-serif;} .answers-row {display:grid; grid-template-columns:1fr 1fr; gap:.65rem; margin: .95rem 0;} .answer {width:100%; display:flex; align-items:center; justify-content:flex-start; gap:.5rem; border:1px solid #d4dbeb; border-radius:.65rem; padding:.67rem .75rem; background:#f8faff; font-weight:600; color:#223152; font-size: 0.9rem; cursor:pointer;} .answer.selected {border-color: var(--primary); background:#fff3e3; color:#f97316;} .answer input[type=text] {flex:1; border:none; background:transparent; padding:0; margin:0;} .answer input[type=checkbox] {margin-right:.5rem;} .question-meta {display:flex; gap:1rem; color:#62748d; font-size:.82rem;} .question-meta strong {color:#0f172a;} .add-question-btn {width:100%; margin-top:1.5rem; padding:.9rem;} .site-footer {padding:1.5rem 0; background:#fff; border-top:1px solid var(--border); margin-top: 3rem;} .site-footer .container {display:flex; justify-content:space-between; align-items:center; font-size:.82rem; color:#8a98af;} .site-footer nav a {margin-left:1rem; color:#62748d; text-decoration:none;} @media (max-width:1100px) {.grid-panel{grid-template-columns:1fr;}.create-top h1{font-size:1.8rem;}} @media (max-width:760px) {.page-header{padding:.6rem 0;}.top-nav{display:none;}.profile{display:none;}.container{width:calc(100% - 1.2rem);}.create-top{padding:1rem 0;}.mode-panel{grid-template-columns:1fr 1fr;}.status-card{flex-wrap:wrap;}.editor-header{flex-direction:column;align-items:stretch;}.answers-row{grid-template-columns:1fr;}.upload-card{min-height:200px;}}
+  </style>
+</head>
+<body>
+  <header class="page-header">
+    <div class="container header-inner">
+      <a href="dashboard.html" class="brand">QuizzBox</a>
+      <nav class="top-nav">
+        <a href="dashboard.html">Dashboard</a>
+        <a class="active" href="create.html">Create</a>
+        <a href="#">Join</a>
+      </nav>
+      <div class="profile" id="user-initial">U</div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="create-top">
+      <h1>Create New Evaluation</h1>
+      <p>Set up your clinical assessment by uploading source material or adding questions manually.</p>
+    </section>
+
+    <section class="mode-panel">
+      <div class="mode-card active" data-mode="ai">AI Mode</div>
+      <div class="mode-card" data-mode="manual">Manual</div>
+    </section>
+
+    <!-- AI Mode Content -->
+    <section class="mode-content active" id="ai-mode">
+      <div class="grid-panel">
+        <article class="config-card">
+          <h3>Configuration</h3>
+          <label>
+            Number of Questions
+            <input type="range" min="5" max="50" value="15" class="range" id="num-questions-ai" />
+            <div class="range-values"><span>5</span><span id="questions-display">15 Questions</span><span>50</span></div>
+          </label>
+          <label>Time Per Question
+            <select id="time-limit-ai">
+              <option value="30">30 seconds</option>
+              <option value="45">45 seconds</option>
+              <option value="60">60 seconds</option>
+            </select>
+          </label>
+        </article>
+
+        <article class="upload-card">
+          <div class="upload-icon">⬆</div>
+          <h2>Drop your clinical PDF here</h2>
+          <p>Our AI will analyze your documentation and generate curriculum-aligned questions automatically.</p>
+          <button class="btn primary" id="browse-btn">Browse Files</button>
+          <input type="file" id="file-input" style="display:none;" accept=".pdf,.docx,.md" />
+          <div class="upload-hint">Max 50MB · PDF, DOCX, MD</div>
+        </article>
+      </div>
+
+      <section class="status-card" id="status-card">
+        <span>●</span>
+        <strong>Ready for analysis…</strong>
+        <span class="waiting">Waiting for upload</span>
+      </section>
+    </section>
+
+    <!-- Manual Mode Content -->
+    <section class="mode-content" id="manual-mode">
+      <div class="grid-panel">
+        <article class="config-card">
+          <h3>Configuration</h3>
+          <label>
+            Evaluation Title
+            <input type="text" id="eval-title" placeholder="My Evaluation" />
+          </label>
+          <label>
+            Time Per Question
+            <select id="time-limit-manual">
+              <option value="30">30 seconds</option>
+              <option value="45">45 seconds</option>
+              <option value="60">60 seconds</option>
+            </select>
+          </label>
+        </article>
+      </div>
+    </section>
+
+    <section class="editor-platform">
+      <div class="editor-header">
+        <div class="progress"><span>Evaluation Progress</span><div class="bar"><div></div></div></div>
+        <div class="actions">
+          <button class="btn light" id="preview-btn">Preview</button>
+          <button class="btn primary" id="save-btn">Save Evaluation</button>
+        </div>
+      </div>
+
+      <div id="questions-container"></div>
+      <button class="btn secondary add-question-btn" id="add-question-btn">+ Add Question</button>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <small>© 2024 QuizzBox Tele-Evaluation. All rights reserved.</small>
+      <nav>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Contact Support</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script type="module">
+    import api from './js/api.js';
+
+    // Auth Check
+    const token = localStorage.getItem('quizzbox_token');
+    if (!token) {
+      window.location.replace('login.html');
+    }
+
+    // Set User Profile
+    const cachedUser = localStorage.getItem('quizzbox_user');
+    if (cachedUser) {
+      const user = JSON.parse(cachedUser);
+      const nameParts = user.name ? user.name.split(' ') : ['User'];
+      document.getElementById('user-initial').textContent = nameParts[0].charAt(0).toUpperCase();
+    }
+
+    // State management
+    let currentMode = 'ai';
+    let questions = [{ id: 1, text: '', answers: [{ id: 1, text: '', isCorrect: true }, { id: 2, text: '', isCorrect: false }] }];
+
+    // Mode switching
+    document.querySelectorAll('.mode-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const mode = card.dataset.mode;
+        document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.mode-content').forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+        document.getElementById(`${mode}-mode`).classList.add('active');
+        currentMode = mode;
+      });
+    });
+
+    // Browse file button
+    document.getElementById('browse-btn').addEventListener('click', () => {
+      document.getElementById('file-input').click();
+    });
+
+    document.getElementById('file-input').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        document.getElementById('status-card').innerHTML = `
+          <span>●</span>
+          <strong>Analyzing ${file.name}…</strong>
+          <span class="waiting">Processing</span>
+        `;
+      }
+    });
+
+    // Questions display
+    function renderQuestions() {
+      const container = document.getElementById('questions-container');
+      container.innerHTML = questions.map((q, idx) => `
+        <div class="question-card" data-question-id="${q.id}">
+          <div class="question-top">
+            <span>Question ${String(idx + 1).padStart(2, '0')}</span>
+            <span>Multiple Choice</span>
+          </div>
+          <label>
+            Question Prompt
+            <textarea class="question-text" placeholder="Enter the evaluation question here...">${q.text}</textarea>
+          </label>
+          <div class="answers-row">
+            ${q.answers.map((ans, ansIdx) => `
+              <label class="answer ${ans.isCorrect ? 'selected' : ''}">
+                <input type="checkbox" class="answer-correct" ${ans.isCorrect ? 'checked' : ''} />
+                <span>${String.fromCharCode(65 + ansIdx)}.</span>
+                <input type="text" class="answer-text" placeholder="Enter answer..." value="${ans.text}" />
+              </label>
+            `).join('')}
+          </div>
+          <button class="btn light" style="margin-top:0.75rem; width:auto;" onclick="removeQuestion(${q.id})">Remove Question</button>
+        </div>
+      `).join('');
+
+      // Add event listeners
+      document.querySelectorAll('.question-text').forEach(el => {
+        el.addEventListener('change', (e) => {
+          const qId = e.target.closest('.question-card').dataset.questionId;
+          const q = questions.find(q => q.id == qId);
+          q.text = e.target.value;
+        });
+      });
+
+      document.querySelectorAll('.answer-text').forEach(el => {
+        el.addEventListener('change', (e) => {
+          const qId = e.target.closest('.question-card').dataset.questionId;
+          const answerIdx = Array.from(e.target.parentElement.parentElement.children).indexOf(e.target.parentElement);
+          const q = questions.find(q => q.id == qId);
+          q.answers[answerIdx].text = e.target.value;
+        });
+      });
+
+      document.querySelectorAll('.answer-correct').forEach(el => {
+        el.addEventListener('change', (e) => {
+          const qId = e.target.closest('.question-card').dataset.questionId;
+          const answerIdx = Array.from(e.target.closest('.answers-row').children).indexOf(e.target.parentElement);
+          const q = questions.find(q => q.id == qId);
+          q.answers.forEach((a, i) => a.isCorrect = i === answerIdx);
+        });
+      });
+    }
+
+    window.removeQuestion = (qId) => {
+      questions = questions.filter(q => q.id !== qId);
+      renderQuestions();
+    };
+
+    // Add question
+    document.getElementById('add-question-btn').addEventListener('click', () => {
+      const newId = Math.max(...questions.map(q => q.id)) + 1;
+      questions.push({
+        id: newId,
+        text: '',
+        answers: [
+          { id: 1, text: '', isCorrect: true },
+          { id: 2, text: '', isCorrect: false }
+        ]
+      });
+      renderQuestions();
+    });
+
+    // Range input update
+    document.getElementById('num-questions-ai').addEventListener('input', (e) => {
+      document.getElementById('questions-display').textContent = `${e.target.value} Questions`;
+    });
+
+    // Save evaluation
+    document.getElementById('save-btn').addEventListener('click', async () => {
+      const btn = document.getElementById('save-btn');
+      btn.textContent = 'Saving...';
+      btn.disabled = true;
+
+      try {
+        const timeLimit = currentMode === 'ai' 
+          ? parseInt(document.getElementById('time-limit-ai').value)
+          : parseInt(document.getElementById('time-limit-manual').value);
+        
+        const title = currentMode === 'ai'
+          ? 'AI Generated Evaluation'
+          : (document.getElementById('eval-title').value || 'Manual Evaluation');
+
+        await api.evaluations.create({
+          title: title,
+          description: `${currentMode.toUpperCase()} mode evaluation`,
+          numQuestions: questions.length,
+          timePerQuestion: timeLimit,
+          mode: currentMode === 'ai' ? 'AI' : 'MANUAL',
+          visibility: 'PRIVATE'
+        });
+
+        btn.textContent = 'Saved!';
+        setTimeout(() => {
+          window.location.href = 'dashboard.html';
+        }, 1500);
+
+      } catch (err) {
+        console.error("Save failed:", err);
+        btn.textContent = 'Save Evaluation';
+        btn.disabled = false;
+        alert(`Failed to save: ${err.message}`);
+      }
+    });
+
+    // Initial render
+    renderQuestions();
+  </script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QuizzBox - Evaluation Session</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+:root{--bg:#f7f9fc;--surface:#fff;--text:#0f172a;--muted:#64748b;--border:#e3e9f4;--primary:#f97316;--shadow:0 16px 35px rgba(15,23,42,.14);}*{box-sizing:border-box;}body{margin:0;min-height:100vh;display:flex;flex-direction:column;font-family:'Inter',system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--text);}a{color:var(--primary);text-decoration:none;} .container{width:min(1180px,calc(100% - 2rem));margin:0 auto;} .site-header{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:10;} .header-inner{display:flex;align-items:center;justify-content:space-between;height:70px;gap:1rem;} .brand{font-size:1.5rem;font-weight:800;color:var(--primary);text-decoration:none;} .timer{font-weight:700;color:#2d405f;} .timer.warning {color:#dc2626;} .btn{transition:0.2s;} .btn.submit{background:linear-gradient(120deg,var(--primary),#ff7a10);color:#fff;border:none;border-radius:.7rem;padding:.62rem 1.15rem;cursor:pointer;font-weight:700;} .btn.submit:hover{opacity:0.9;} .session-page{padding:2rem 0;flex:1;} .question-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1.5rem;} .question-head span{font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;color:#f97316;font-weight:800;background:#fff4e6;padding:4px 10px;border-radius:6px;} .question-head h1{margin:0;font-size:2rem;font-weight:800;color:#15213d;} .quit{font-size:.85rem;font-weight:700;color:#65778f;} .quit:hover{color:#dc2626;} .question-card{background:var(--surface);border:1px solid var(--border);border-radius:1rem;box-shadow:var(--shadow);padding:1.5rem;margin-bottom:1.5rem;} .question-card p{margin:0 0 1.25rem;font-size:1.15rem;line-height:1.6;color:#0d1f3f;} .options{display:grid;gap:.68rem;} .option{background:#f8fbff;border:1px solid #d7e3f2;border-radius:.75rem;padding:.92rem .95rem;text-align:left;font-weight:600;color:#1f3e65;cursor:pointer;transition:.2s;} .option:hover{border-color:var(--primary);background:#fff5e9;} .option.selected{border-color:var(--primary);background:#fff5e9;box-shadow:0 0 0 2px rgba(249,115,22,0.2);} .progress-card{background:var(--surface);border:1px solid var(--border);border-radius:.75rem;padding:1rem;} .progress-info{display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;font-size:.83rem;color:#566f91;} .progress-info strong{color:#f97316;} .progress-bar{width:100%;height:.75rem;background:#e7effa;border-radius:999px;overflow:hidden;} .progress-bar > div{width:20%;height:100%;background:linear-gradient(120deg,var(--primary),#ff7c18);transition:width 0.3s ease;} .site-footer{background:#fff;border-top:1px solid var(--border);padding:1rem 0;margin-top:auto;} .footer-inner{display:flex;justify-content:space-between;align-items:center;font-size:.85rem;color:#8a9cb8;} .footer-inner nav a{margin-left:1rem;color:#5f7ea0;} @media(max-width:980px){.question-head{flex-direction:column;align-items:flex-start;} .header-inner{flex-wrap:wrap;justify-content:center;}.question-card p{font-size:1.1rem;}} @media(max-width:640px){.site-header{padding:.4rem 0;}.timer{display:none;}.question-head{gap:.5rem;} .question-head h1{font-size:1.5rem;} .question-card{padding:1.2rem;} }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="dashboard.html" class="brand">QuizzBox</a>
+      <div class="timer" id="session-timer">⏱ 02:45 remaining</div>
+      <button class="btn submit" id="submit-btn" onclick="submitExam()">Submit Exam</button>
+    </div>
+  </header>
+
+  <main class="session-page">
+    <div class="container">
+      <section class="question-head">
+        <span>Diagnostic Section</span>
+        <h1 id="question-indicator">Question 4 of 20</h1>
+        <a href="dashboard.html" class="quit" onclick="return confirm('Are you sure you want to quit? Your progress may be lost.')">Quit Evaluation</a>
+      </section>
+
+      <section class="question-card">
+        <p>Based on the presenting clinical symptoms of neuromuscular fatigue and the patient's pharmacological history, which diagnostic intervention is indicated as the primary confirmatory step?</p>
+
+        <div class="options">
+          <button class="option" onclick="selectOption(this)">A) Single-fiber electromyography (SFEMG)</button>
+          <button class="option" onclick="selectOption(this)">B) Anti-acetylcholine receptor (AChR) antibody assay</button>
+          <button class="option" onclick="selectOption(this)">C) Repetitive nerve stimulation (RNS) studies</button>
+          <button class="option" onclick="selectOption(this)">D) Serial magnetic resonance imaging of the mediastinum</button>
+        </div>
+      </section>
+
+      <section class="progress-card">
+        <div class="progress-info"><span>Session Progress</span><strong>20% Complete</strong></div>
+        <div class="progress-bar"><div style="width: 20%;"></div></div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <small>© 2024 QuizzBox Tele-Evaluation. All rights reserved.</small>
+      <nav><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Support</a></nav>
+    </div>
+  </footer>
+
+  <script>
+    // UX Interactivity for Options
+    function selectOption(btn) {
+      document.querySelectorAll('.option').forEach(el => el.classList.remove('selected'));
+      btn.classList.add('selected');
+    }
+
+    // Mock Timer Logic
+    let timeLeft = 165; // 2 mins 45 secs
+    const timerDisplay = document.getElementById('session-timer');
+    
+    const interval = setInterval(() => {
+      timeLeft--;
+      if(timeLeft <= 0) {
+        clearInterval(interval);
+        submitExam();
+      } else {
+        const mins = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+        const secs = (timeLeft % 60).toString().padStart(2, '0');
+        timerDisplay.textContent = `⏱ ${mins}:${secs} remaining`;
+        
+        if (timeLeft <= 30) {
+          timerDisplay.classList.add('warning');
+        }
+      }
+    }, 1000);
+
+    // Submit action
+    function submitExam() {
+      const btn = document.getElementById('submit-btn');
+      btn.textContent = 'Submitting...';
+      btn.disabled = true;
+      btn.style.opacity = '0.7';
+      clearInterval(interval);
+      
+      // Simulate network request
+      setTimeout(() => {
+        window.location.replace('results.html');
+      }, 1000);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QuizzBox - Results</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+:root {--bg:#f7f8fc;--surface:#fff;--text:#0f172a;--muted:#64748b;--primary:#f97316;--border:#e5ebf5;--shadow:0 17px 45px rgba(15,23,42,0.12);} *{box-sizing:border-box;} body{margin:0; min-height:100vh; display:flex; flex-direction:column; font-family:'Inter',system-ui,-apple-system,Segoe UI,sans-serif; color:var(--text); background:var(--bg);} .container{width:min(1180px,calc(100% - 2rem)); margin:0 auto;} .site-header{background:#fff;border-bottom:1px solid var(--border);} .header-inner{display:flex;align-items:center;justify-content:space-between;height:72px;} .brand{font-weight:800;font-size:1.4rem;color:var(--primary);text-decoration:none;} .nav{display:flex;gap:1.1rem;} .nav a{text-decoration:none;color:#325069;font-weight:600;} .nav a.active{color:var(--primary);} .profile{font-size:1.1rem;width:36px;height:36px;border-radius:50%;background:#fff3e3;color:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:bold;} .results-page{padding:2rem 0;flex:1;} .top-summary{margin-bottom:2rem;} .badge{display:inline-flex;align-items:center;gap:.35rem;background:#fff7ed;color:#c25203;padding:.3rem .8rem;border-radius:999px;font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;} .top-summary h1{margin:.5rem 0 .35rem;font-size:2.2rem;} .top-summary p{margin:0;color:#5c6f8f;font-size:1.05rem;} .stats-grid{display:grid;grid-template-columns:1.1fr 1fr 1fr 1.2fr;gap:.95rem;margin:1.5rem 0;} .card{background:var(--surface);border:1px solid var(--border);border-radius:1rem;padding:1.25rem;box-shadow:var(--shadow);} .score-card{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.55rem;} .circle-score{width:100%;height:140px;display:flex;align-items:center;justify-content:center;position:relative;border-radius:999px;background:linear-gradient(135deg,#fff,#fff);border: 4px solid #f97316; box-shadow: 0 0 0 6px #fff4e6;} .circle-score strong{position:relative;font-size:3.5rem;color:#0f172a;z-index:1;} .circle-score span{position:relative;font-size:1.5rem;color:#1f2a42;z-index:1;} .score-card small{background:#ffefdf;color:#c25806;padding:.4rem .8rem;border-radius:9px;font-weight:700;margin-top:.5rem;} .stat-card{display:flex;flex-direction:column;justify-content:center;text-align:center;} .stat-card small{color:#94a3b8;text-transform:uppercase;letter-spacing:.08em;font-size:.72rem;font-weight:700;} .stat-card h2{margin:.5rem 0 0;font-size:1.8rem;color:#1c2e49;} .answer-card{display:flex;flex-direction:column;justify-content:center;gap:.5rem;} .answer-card div{background:#f8fbff;border:1px solid #dbe9f8;border-radius:.7rem;padding:.78rem;display:flex;justify-content:space-between;align-items:center;font-size:.95rem;} .answer-card .bonus{background:linear-gradient(120deg,var(--primary),#ff7a1f);color:#fff;padding:.6rem .75rem;border-radius:.6rem;font-weight:700;font-size:.9rem;border:none;} .actions-row{display:flex;gap:.75rem;margin-bottom:1.5rem;} .btn{transition:0.2s;border:1px solid transparent;border-radius:.75rem;padding:.78rem 1.08rem;font-weight:700;cursor:pointer;} .btn.primary{background:linear-gradient(120deg,var(--primary),#f47112);color:#fff;border-color:transparent;} .btn.primary:hover{opacity:0.9;} .btn.outline{background:#fff;color:#1f2e49;border-color:#d5e4f3;text-decoration:none;display:inline-flex;align-items:center;} .btn.outline:hover{background:#f8fafc;border-color:#cbd5e1;} .insight-block{margin-top:1.5rem;background:linear-gradient(150deg, #0f1930 0%, #12253f 100%);border-radius:1rem;padding:2rem;display:grid;grid-template-columns:1.1fr 1fr;gap:2rem;align-items:center;} .insight-text span{display:inline-block;background:#1f2f50;color:#ffb35f;padding:.3rem .8rem;border-radius:8px;font-size:.75rem;font-weight:700;letter-spacing:.06em;} .insight-text blockquote{margin:1rem 0 .5rem;color:#e5f3ff;font-size:1.15rem;line-height:1.5;border-left:4px solid #264c7f;padding-left:1rem;} .insight-text small{color:#8ca6d3;font-weight:500;} .insight-chart .chart-visual{height:164px;background:#0e1e34;border-radius:.8rem;display:flex;align-items:center;justify-content:center;color:#92b5e1;font-weight:700;border:1px solid #1e3552;} .site-footer{padding:1.5rem 0;background:#fff;border-top:1px solid var(--border);margin-top:auto;} .footer-inner{display:flex;justify-content:space-between;align-items:center;font-size:.86rem;color:#9ca6b8;} .footer-inner .links a{margin-left:1.5rem;color:#5f7ea6;text-decoration:none;font-weight:500;} @media(max-width:1080px){.stats-grid{grid-template-columns:1fr 1fr;}.insight-block{grid-template-columns:1fr;}} @media(max-width:760px){.nav{display:none;} .profile{display:none;} .stats-grid{grid-template-columns:1fr;}.results-page{padding:1.5rem 0;}.header-inner{height:auto;padding:1rem 0;}.container{width:calc(100% - 1.5rem);}.insight-block{padding:1.5rem;}.circle-score{height:120px;width:120px;margin:0 auto;}.top-summary h1{font-size:1.8rem;} .footer-inner{flex-direction:column;gap:1rem;}}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="dashboard.html" class="brand">QuizzBox</a>
+      <nav class="nav">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="create.html">Create</a>
+        <a href="join.html">Join</a>
+        <a class="active" href="results.html">Results</a>
+      </nav>
+      <div class="profile" id="user-initial">U</div>
+    </div>
+  </header>
+
+  <main class="container results-page">
+    <section class="top-summary">
+      <span class="badge">Evaluation Complete</span>
+      <h1 id="result-title">Excellent performance, User!</h1>
+      <p>Your results for <strong>Neurological Assessment Protocol 4.2</strong> are ready. You've demonstrated exceptional mastery today.</p>
+    </section>
+
+    <section class="stats-grid">
+      <article class="card score-card">
+        <div class="circle-score"><strong>18</strong><span>/20</span></div>
+        <small>90th Percentile</small>
+      </article>
+      <article class="card stat-card">
+        <small>Total Duration</small>
+        <h2>14:32</h2>
+      </article>
+      <article class="card stat-card">
+        <small>Accuracy Grade</small>
+        <h2>Precision High</h2>
+      </article>
+      <article class="card answer-card">
+        <div><strong>Correct</strong><span>18</span></div>
+        <div><strong>Incorrect</strong><span>02</span></div>
+        <div class="bonus">+16 Points</div>
+      </article>
+    </section>
+
+    <section class="actions-row">
+      <button class="btn primary">Review Answers</button>
+      <a href="dashboard.html" class="btn outline">Back to Dashboard</a>
+    </section>
+
+    <section class="insight-block">
+      <div class="insight-text">
+        <span>QuizzBox Insight</span>
+        <blockquote>“Your diagnostic speed in the 'Critical Care' module has increased by 15% since the last session. Remarkable progress.”</blockquote>
+        <small>AI Learning Assistant</small>
+      </div>
+      <div class="insight-chart">
+        <div class="chart-visual">[Distribution Graph Placeholder]</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span>© 2024 QuizzBox Tele-Evaluation</span>
+      <div class="links"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Support</a></div>
+    </div>
+  </footer>
+
+  <script type="module">
+    // Display Username logic
+    const cachedUser = localStorage.getItem('quizzbox_user');
+    if (cachedUser) {
+      try {
+        const user = JSON.parse(cachedUser);
+        const nameParts = user.name ? user.name.split(' ') : ['User'];
+        const firstName = nameParts[0];
+        
+        document.getElementById('user-initial').textContent = firstName.charAt(0).toUpperCase();
+        document.getElementById('result-title').textContent = `Excellent performance, ${firstName}!`;
+      } catch (e) {
+        console.error("Failed parsing user UI data", e);
+      }
+    }
+  </script>
+</body>
+</html>

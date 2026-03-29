@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QuizzBox - Create Account</title>
+  <link rel="stylesheet" href="css/main.css">
+  <style>
+    /* Register specific styles from user's CSS */
+    .register-page { display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
+    .hero-panel { background: linear-gradient(140deg, #fffaf7, #fbfbff); padding: 3rem; display: flex; flex-direction: column; justify-content: center; gap: 1.4rem; }
+    .hero-panel h1 { font-size: clamp(2rem, 4vw, 3.4rem); line-height: 1.08; margin: 0; }
+    .hero-panel p { color: #4b5f7d; max-width: 460px; font-size: 1.1rem; margin: 0; }
+    .info-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 1.5rem; }
+    .info-card { background: #fff; border: 1px solid var(--border); border-radius: 16px; padding: 1.2rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+    .info-card strong { color: var(--text); font-size: 1.1rem; display: block; margin-bottom: 0.3rem; }
+    .info-card p { color: var(--muted); font-size: 0.9rem; margin: 0; }
+    
+    .form-panel { display: flex; align-items: center; justify-content: center; padding: 2rem; background: var(--bg); }
+    .form-card { width: min(500px, 100%); background: #fff; border-radius: 20px; padding: 2.5rem; box-shadow: var(--shadow); border: 1px solid var(--border); }
+    .form-card h2 { font-size: 2.1rem; margin-bottom: 0.5rem; }
+    .form-card > p { color: var(--muted); margin-bottom: 1.5rem; font-size: 1.05rem; }
+    
+    .progress-bar { height: 6px; width: 100%; background: #e5ebf6; border-radius: 99px; margin-bottom: 2rem; overflow: hidden; }
+    .progress-bar div { width: 0%; height: 100%; background: var(--primary); transition: width 0.3s ease; }
+    
+    .register-form { display: grid; gap: 1.2rem; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .register-form label { display: grid; gap: 0.5rem; font-size: 0.8rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; }
+    .register-form input[type=text], .register-form input[type=email], .register-form input[type=password] { width: 100%; border: 1px solid var(--border); border-radius: 12px; padding: 1rem; font-size: 1rem; background: #f8fafc; transition: var(--transition); }
+    .register-form input:focus { outline: none; border-color: var(--primary); background: #fff; box-shadow: 0 0 0 4px var(--primary-subtle); }
+    
+    .checkbox-label { display: flex; align-items: flex-start; gap: 0.6rem; font-weight: 500; color: #475569; text-transform: none !important; letter-spacing: normal !important; margin-top: 0.5rem; flex-direction: row !important; }
+    .checkbox-label input { width: 1.2rem; height: 1.2rem; accent-color: var(--primary); margin-top: 0.2rem; flex-shrink: 0; }
+    .checkbox-label a { color: var(--primary); text-decoration: none; font-weight: 600; }
+    
+    .btn-submit { width: 100%; margin-top: 1rem; padding: 1rem; font-size: 1.1rem; }
+    
+    .error-msg, .success-msg { display: none; padding: 1rem; border-radius: 12px; margin-bottom: 1.5rem; font-size: 0.9rem; font-weight: 500; }
+    .error-msg { background: #fef2f2; color: #b91c1c; border: 1px solid #fca5a5; }
+    .success-msg { background: #f0fdf4; color: #15803d; border: 1px solid #86efac; }
+    
+    .bottom-text { margin-top: 2rem; text-align: center; color: #64748b; font-weight: 500; }
+    .bottom-text a { color: var(--primary); text-decoration: none; font-weight: 700; }
+    
+    @media (max-width: 950px) { .register-page { grid-template-columns: 1fr; } .hero-panel { display: none; } .form-panel { padding: 1.5rem; } .row { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="register-page">
+    <aside class="hero-panel animate-fade">
+      <a href="index.html" style="text-decoration: none; margin-bottom: 2rem; display: block;">
+        <div style="font-size: 1.5rem; font-weight: 900; color: var(--primary);">QuizzBox</div>
+        <div style="font-size: 0.75rem; color: var(--text); font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;">Tele-Evaluation</div>
+      </a>
+      <h1>Elevate your evaluations with editorial precision.</h1>
+      <p>Join thousands of educators and creators building beautiful, interactive quizzes in minutes.</p>
+      <div class="info-cards">
+        <div class="info-card">
+          <strong>Fast Creation</strong>
+          <p>Build complex tests in record time using Clinical AI.</p>
+        </div>
+        <div class="info-card">
+          <strong>Smart Insights</strong>
+          <p>Real-time competency data at your fingertips.</p>
+        </div>
+      </div>
+      <div style="margin-top: auto; color: #9ca6bc; font-size: 0.85rem; font-weight: 500;">
+        © 2024 QuizzBox Tele-Evaluation. All rights reserved.
+      </div>
+    </aside>
+
+    <main class="form-panel">
+      <div class="form-card animate-fade" style="animation-delay: 0.1s;">
+        <h2>Create Account</h2>
+        <p>Start your journey into professional testing.</p>
+        
+        <div class="progress-bar"><div id="progress"></div></div>
+        
+        <div id="register-error" class="error-msg"></div>
+        <div id="register-success" class="success-msg">Account created! Redirecting to login...</div>
+        
+        <form id="register-form" class="register-form">
+          <label>
+            Full Name
+            <input type="text" id="name" placeholder="Dr. Jane Doe" required />
+          </label>
+          <label>
+            Email Address
+            <input type="email" id="email" placeholder="jane@institution.edu" required />
+          </label>
+          <div class="row">
+            <label>
+              Password
+              <input type="password" id="password" placeholder="••••••••" required minlength="6" />
+            </label>
+            <label>
+              Confirm Password
+              <input type="password" id="confirm-password" placeholder="••••••••" required minlength="6" />
+            </label>
+          </div>
+          <label class="checkbox-label">
+            <input type="checkbox" id="terms" required />
+            <span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</span>
+          </label>
+          <button type="submit" id="register-btn" class="btn btn-primary btn-submit">Create Account →</button>
+        </form>
+        
+        <p class="bottom-text">Already have an account? <a href="login.html">Sign in</a></p>
+      </div>
+    </main>
+  </div>
+
+  <script type="module">
+    import api from './js/api.js';
+    
+    const form = document.getElementById('register-form');
+    const inputs = form.querySelectorAll('input');
+    const progress = document.getElementById('progress');
+    
+    // Simple progress bar logic
+    inputs.forEach(input => {
+      input.addEventListener('input', () => {
+        let filled = 0;
+        if (document.getElementById('name').value) filled++;
+        if (document.getElementById('email').value) filled++;
+        if (document.getElementById('password').value) filled++;
+        if (document.getElementById('terms').checked) filled += 0.5;
+        
+        progress.style.width = `${Math.min(100, (filled / 3.5) * 100)}%`;
+      });
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirm-password').value;
+      
+      const errorDiv = document.getElementById('register-error');
+      const successDiv = document.getElementById('register-success');
+      const btn = document.getElementById('register-btn');
+      
+      if (password !== confirmPassword) {
+        errorDiv.textContent = 'Passwords do not match.';
+        errorDiv.style.display = 'block';
+        return;
+      }
+      
+      try {
+        errorDiv.style.display = 'none';
+        btn.textContent = 'Creating account...';
+        btn.disabled = true;
+        
+        await api.auth.register({ name, email, password });
+        
+        successDiv.style.display = 'block';
+        setTimeout(() => {
+          window.location.href = 'login.html';
+        }, 1500);
+        
+      } catch (err) {
+        errorDiv.textContent = err.message || 'An error occurred during registration.';
+        errorDiv.style.display = 'block';
+        
+        btn.textContent = 'Create Account →';
+        btn.disabled = false;
+        
+        errorDiv.animate([
+          { transform: 'translateX(0)' },
+          { transform: 'translateX(-5px)' },
+          { transform: 'translateX(5px)' },
+          { transform: 'translateX(0)' }
+        ], { duration: 300 });
+      }
+    });
+  </script>
+</body>
+</html>

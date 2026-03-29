@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QuizzBox - Tele-Evaluation Redefined</title>
+  <link rel="stylesheet" href="css/main.css">
+  <style>
+    /* Section Specific Styles (to keep main.css clean for other pages) */
+    .hero {
+      padding: 8rem 0 4rem;
+      background: linear-gradient(135deg, white 0%, #fff7ed 100%);
+      overflow: hidden;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      align-items: center;
+      gap: 4rem;
+    }
+    .hero-text { max-width: 620px; }
+    .eyebrow {
+      font-size: 0.875rem;
+      font-weight: 800;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 1rem;
+      display: block;
+    }
+    .hero h1 span { color: var(--primary); }
+    .hero p { font-size: 1.25rem; color: var(--muted); margin: 1.5rem 0 2rem; }
+    .hero-cta { display: flex; gap: 1rem; }
+
+    .hero-image {
+      position: relative;
+      perspective: 1000px;
+    }
+    .screen-mockup {
+      width: 100%;
+      border-radius: 24px;
+      box-shadow: 0 40px 100px -20px rgba(0,0,0,0.25);
+      border: 1px solid var(--border);
+      background: #0f172a;
+      overflow: hidden;
+      transform: rotateY(-15deg) rotateX(5deg);
+      transition: var(--transition);
+    }
+    .screen-mockup:hover {
+      transform: rotateY(-5deg) rotateX(2deg);
+    }
+    .screen-mockup img { width: 100%; display: block; }
+
+    .features { padding: 6rem 0; }
+    .section-header { text-align: center; margin-bottom: 4rem; }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+    }
+    .card {
+      background: white;
+      padding: 2.5rem;
+      border-radius: 24px;
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      transition: var(--transition);
+    }
+    .card:hover { border-color: var(--primary); box-shadow: var(--shadow); }
+    .card-icon {
+      width: 56px; height: 56px;
+      border-radius: 16px;
+      background: var(--primary-subtle);
+      color: var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem;
+    }
+    .card-img {
+      width: 100%;
+      height: 240px;
+      border-radius: 16px;
+      background: #eee;
+      margin-top: auto;
+      overflow: hidden;
+    }
+    .card-img img { width: 100%; height: 100%; object-fit: cover; }
+
+    .how { padding: 6rem 0; background: var(--white); }
+    .how-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3rem;
+      margin-top: 4rem;
+    }
+    .step { text-align: center; }
+    .step-num {
+      width: 48px; height: 48px;
+      background: var(--primary);
+      color: white;
+      border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+    }
+
+    .cta-banner {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+      padding: 5rem 2rem;
+      border-radius: 32px;
+      text-align: center;
+      color: white;
+      margin: 4rem 0 8rem;
+    }
+    .cta-banner h2 { color: white; margin-bottom: 1rem; }
+    .cta-banner p { color: rgba(255,255,255,0.9); margin-bottom: 2rem; font-size: 1.1rem; }
+
+    .site-header {
+      height: 80px;
+      background: rgba(255,255,255,0.8);
+      backdrop-filter: blur(12px);
+      position: sticky; top: 0; z-index: 100;
+      border-bottom: 1px solid var(--border);
+    }
+    .header-inner { display: flex; align-items: center; justify-content: space-between; height: 100%; }
+    .brand { display: flex; flex-direction: column; line-height: 1; text-decoration: none; }
+    .logo { font-size: 1.5rem; font-weight: 900; color: var(--text); }
+    .tag { font-size: 0.75rem; color: var(--primary); font-weight: 800; letter-spacing: 0.1em; }
+    .nav { display: flex; gap: 2rem; }
+    .nav a { font-weight: 700; color: var(--muted); text-decoration: none; }
+    .nav a:hover { color: var(--primary); }
+
+    @media (max-width: 1024px) {
+      .hero-grid { grid-template-columns: 1fr; text-align: center; }
+      .hero-text { margin: 0 auto; }
+      .hero-cta { justify-content: center; }
+      .features-grid, .how-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner flex items-center justify-between">
+      <a href="/" class="brand">
+        <span class="logo">QuizzBox</span>
+        <span class="tag uppercase">Tele-Evaluation</span>
+      </a>
+      <nav class="nav hidden lg:flex">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="create.html">Create</a>
+        <a href="join.html">Join</a>
+        <a href="results.html">Results</a>
+      </nav>
+      <div class="actions flex gap-4">
+        <button class="btn btn-outline">Support</button>
+        <a href="login.html" class="btn btn-primary">Profile</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-text animate-fade">
+          <span class="eyebrow">TELE-EVALUATION REDEFINED</span>
+          <h1>Design better tests, <span>faster.</span></h1>
+          <p>Le workspace haute fidélité pour formateurs cliniques. Curate, deploy, and analyze evaluations with QuizzBox's precision tools.</p>
+          <div class="hero-cta">
+            <a href="register.html" class="btn btn-primary">Get Started</a>
+            <a href="#" class="btn btn-outline">View Demo</a>
+          </div>
+        </div>
+        <div class="hero-image animate-fade" style="animation-delay: 0.2s">
+          <div class="screen-mockup">
+            <img src="assets/dashboard.png" alt="QuizzBox Dashboard">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="features">
+      <div class="container">
+        <div class="section-header">
+          <h2>Precision Curated Tools</h2>
+        </div>
+        <div class="features-grid">
+          <article class="card">
+            <div class="card-icon">✦</div>
+            <h3>AI-Powered Question Generation</h3>
+            <p>Upload medical PDF and let QuizzBox's Clinical AI extract core competencies, generating nuanced multiple-choice questions in seconds.</p>
+            <div class="card-img">
+              <img src="assets/ai_portrait.png" alt="AI Feature">
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-icon">🛠</div>
+            <h3>Manual Customization</h3>
+            <p>Complete creative control. Fine-tune every distractor, add clinical multimedia anchors, and calibrate difficulty scales with our intuitive editor.</p>
+            <div class="card-img">
+              <img src="assets/manual_tool.png" alt="Manual Tool">
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="how">
+      <div class="container">
+        <div class="section-header">
+          <h2>How it works</h2>
+          <p>Une expérience fluide pour des évaluations à très haute exigence.</p>
+        </div>
+        <div class="how-grid">
+          <div class="step">
+            <div class="step-num">1</div>
+            <h4>Create</h4>
+            <p>Saisir le contenu clinique ou utiliser nos templates.</p>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <h4>Share</h4>
+            <p>Distribuer des liens sécurisés et horodatés en mode HIPAA.</p>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <h4>Evaluate</h4>
+            <p>Analyser les métriques et performance en grading automatique.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="container">
+      <section class="cta-banner">
+        <h2>Ready to elevate your standards?</h2>
+        <p>Rejoignez 10 000 professionnels cliniques qui utilisent QuizzBox.</p>
+        <a href="register.html" class="btn" style="background: white; color: var(--primary); padding: 1.2rem 3rem; font-size: 1.2rem;">Start Your Free Trial</a>
+      </section>
+    </div>
+  </main>
+
+  <footer style="padding: 4rem 0; background: white; border-top: 1px solid var(--border);">
+    <div class="container flex justify-between items-center">
+      <p>© 2024 QuizzBox Tele-Evaluation. All rights reserved.</p>
+      <div class="flex gap-4">
+        <a href="#" style="color: var(--muted); text-decoration: none;">Privacy</a>
+        <a href="#" style="color: var(--muted); text-decoration: none;">Terms</a>
+        <a href="#" style="color: var(--muted); text-decoration: none;">Contact</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

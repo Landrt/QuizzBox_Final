@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QuizzBox Admin - Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+:root {--bg:#f7f8fb;--surface:#fff;--text:#0f172a;--muted:#64748b;--primary:#f97316;--border:#e2e8f0;--shadow:0 14px 36px rgba(15,23,42,0.12);}*{box-sizing:border-box;}body{margin:0;font-family:'Inter',system-ui,-apple-system,Segoe UI,sans-serif;color:var(--text);background:var(--bg);}a{text-decoration:none;color:#334d7a;} .dashboard-layout{display:grid;grid-template-columns:260px 1fr;min-height:100vh;} .side-nav{background:#fff;border-right:1px solid var(--border);padding:1rem 1rem 1.1rem;} .nav-brand{display:flex;flex-direction:column;gap:.15rem;margin-bottom:1.3rem;} .nav-brand strong{font-size:1.1rem;color:var(--primary);} .nav-brand small{color:#8c9dbf;font-size:.7rem;letter-spacing:.09em;text-transform:uppercase;} .side-nav nav{display:flex;flex-direction:column;gap:.45rem;} .side-nav a{padding:.5rem .6rem;border-radius:.63rem;font-weight:700;color:#4c6b92;} .side-nav a.active{color:var(--primary);background:#fff4e6;} .side-actions{margin-top:1.4rem;display:flex;flex-direction:column;gap:.63rem;} .btn.primary{border:none;background:linear-gradient(125deg,var(--primary),#ff7a1c);color:#fff;border-radius:.65rem;padding:.65rem .7rem;font-weight:700;cursor:pointer;} .side-actions a{color:#446d9a;font-weight:700;} .main-area{padding:1rem 1.3rem;} .top-bar{display:flex;align-items:center;gap:.9rem;margin-bottom:.95rem;} .top-bar input{flex:1;padding:.68rem .78rem;border:1px solid #d8e6f6;border-radius:.7rem;} .top-links{display:flex;gap:.65rem;} .top-links a{color:#315073;font-weight:700;} .top-links a.active{color:var(--primary);} .top-user{width:36px;height:36px;border-radius:50%;background:#e8f1ff;display:grid;place-items:center; color: var(--primary); font-weight: bold;} .hero-title h1{margin:.2rem 0 0;font-size:2.1rem;} .hero-title p{margin:.33rem 0 0;color:#5d7090;} .cards-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.78rem;margin:1rem 0;}.eval-card{background:#fff;border:1px solid var(--border);border-radius:1rem;padding:.95rem;box-shadow:var(--shadow);position:relative;}.eval-card span.badge{position:absolute;top:.8rem;left:.8rem;font-size:.69rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;border-radius:.45rem;padding:.18rem .46rem;} .eval-card.shared span.badge{background:#fff4e8;color:#d8721a;} .eval-card.private span.badge{background:#eef3ff;color:#567bc2;} .eval-card h3{margin:1.1rem 0 .25rem;}.eval-card p{margin:0 0 .7rem;color:#576b8f;font-size:.9rem;line-height:1.3;} .code{font-size:.82rem;color:#435c82;font-weight:700;}.code strong{color:#f97316;} .card-actions{display:flex;gap:.5rem;font-size:.8rem;font-weight:700;margin-top:.78rem;}.card-actions a{color:#f97316;} .card-actions span{color:#94a0b7;} .eval-card.create-new{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4rem;border:2px dashed #e8edf7;color:#5f7197; cursor:pointer;} .new-icon{width:36px;height:36px;border-radius:50%;background:#fff6eb;color:#f97316;display:grid;place-items:center;font-weight:700;} .insight-banner{background:linear-gradient(120deg,#f97316,#ef7a13);border-radius:1rem;color:#fff;padding:1.15rem;display:grid;grid-template-columns:2fr 1fr;gap:1rem;align-items:center;} .insight-banner h2{margin:.15rem 0 .3rem;font-size:1.8rem;} .insight-banner p{margin:0;color:rgba(255,255,255,.9);} .stats{display:flex;gap:1.2rem;margin-top:.78rem;} .stats div{background:rgba(255,255,255,.15);border-radius:.7rem;padding:.7rem .86rem;}.stats strong{display:block;font-size:1.7rem;} .avg-diff{background:rgba(255,255,255,.27);}.dashboard-footer{margin-top:1rem;display:flex;justify-content:space-between;align-items:center;color:#8696bb;font-size:.85rem;} .dashboard-footer a{margin-left:.8rem;color:#d7e3f9;} @media(max-width:1120px){.cards-grid{grid-template-columns:repeat(2,minmax(0,1fr));}.dashboard-layout{grid-template-columns:220px 1fr;}} @media(max-width:820px){.dashboard-layout{grid-template-columns:1fr;}.side-nav{position:static;width:auto;}.top-bar{flex-wrap:wrap;}.top-user{margin-left:auto;}.insight-banner{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body>
+  <div class="dashboard-layout">
+    <aside class="side-nav">
+      <div class="nav-brand">
+        <a href="index.html" style="text-decoration: none;">
+          <strong>QuizzBoxAdmin</strong><small style="display: block;">Tele-Evaluation Suite</small>
+        </a>
+      </div>
+      <nav>
+        <a class="active" href="dashboard.html">Overview</a>
+        <a href="#">My Evaluations</a>
+        <a href="#">Analytics</a>
+      </nav>
+      <div class="side-actions">
+        <button class="btn primary" onclick="window.location.href='create.html'">+ New Assessment</button>
+        <a href="#">Help Center</a>
+        <a href="#" id="logout-btn">Log Out</a>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="top-bar">
+        <input placeholder="Search evaluations..." />
+        <div class="top-links"><a href="dashboard.html" class="active">Dashboard</a><a href="create.html">Create</a><a href="join.html">Join</a></div>
+        <div class="top-user" id="user-initial">U</div>
+      </header>
+
+      <section class="hero-title">
+        <h1>Active Evaluations, <span id="user-greeting">Educator</span></h1>
+        <p>Manage your active clinical assessments, monitor student progress, and review shared results across the curriculum.</p>
+      </section>
+
+      <section class="cards-grid" id="evaluations-container">
+        <!-- Will be populated by JS -->
+        <article class="eval-card create-new" onclick="window.location.href='create.html'">
+          <div class="new-icon">+</div>
+          <h3>Create Evaluation</h3>
+          <p>Begin building a new clinical assessment or exam session.</p>
+        </article>
+      </section>
+
+      <section class="insight-banner">
+        <h2>Usage Insights</h2>
+        <p>Your clinical evaluations have reached over 1,200 students this semester with a 94% completion rate.</p>
+        <div class="stats">
+          <div><strong>12</strong><span>Active Tests</span></div>
+          <div><strong>458</strong><span>Submissions</span></div>
+          <div class="avg-diff"><strong>8.4</strong><span>Avg. Difficulty</span></div>
+        </div>
+      </section>
+
+      <footer class="dashboard-footer">
+        <small>© 2024 QuizzBox Tele-Evaluation. All rights reserved.</small>
+        <div><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Support</a></div>
+      </footer>
+    </main>
+  </div>
+
+  <script type="module">
+    import api from './js/api.js';
+
+    // 1. Authentication Check
+    const token = localStorage.getItem('quizzbox_token');
+    if (!token) {
+      window.location.replace('login.html');
+    }
+
+    // 2. Load User Data
+    async function initDashboard() {
+      try {
+        const cachedUser = localStorage.getItem('quizzbox_user');
+        if (cachedUser) {
+          updateUserUI(JSON.parse(cachedUser));
+        }
+
+        const userData = await api.auth.getProfile();
+        updateUserUI(userData);
+        
+        await fetchEvaluations();
+      } catch (err) {
+        console.error("Session expired or invalid:", err);
+        localStorage.removeItem('quizzbox_token');
+        localStorage.removeItem('quizzbox_user');
+        window.location.replace('login.html');
+      }
+    }
+
+    function updateUserUI(user) {
+      const nameParts = user.name ? user.name.split(' ') : ['User'];
+      const initial = nameParts[0].charAt(0).toUpperCase();
+      
+      document.getElementById('user-initial').textContent = initial;
+      document.getElementById('user-greeting').textContent = nameParts[0];
+    }
+
+    async function fetchEvaluations() {
+      try {
+        const evals = await api.evaluations.list();
+        const container = document.getElementById('evaluations-container');
+        
+        if (evals && evals.length > 0) {
+          evals.forEach(ev => {
+            const el = document.createElement('article');
+            el.className = 'eval-card private';
+            
+            el.innerHTML = `
+              <span class="badge">Private</span>
+              <h3>${ev.title}</h3>
+              <p>${ev.description || 'Custom clinical evaluation module.'}</p>
+              <div class="code"><strong>${ev.timePerQuestion ? ev.timePerQuestion + ' secs/Q' : 'Untimed'}</strong></div>
+              <div class="card-actions"><a href="#">Edit</a><a href="results.html">Results</a><span>Draft</span></div>
+            `;
+            // Insert before the "Create New" card
+            container.insertBefore(el, container.lastElementChild);
+          });
+        }
+      } catch (err) {
+        console.error("Failed to fetch evaluations", err);
+      }
+    }
+
+    // Logout logic
+    document.getElementById('logout-btn').addEventListener('click', (e) => {
+      e.preventDefault();
+      localStorage.removeItem('quizzbox_token');
+      localStorage.removeItem('quizzbox_user');
+      window.location.replace('login.html');
+    });
+
+    initDashboard();
+  </script>
+</body>
+</html>

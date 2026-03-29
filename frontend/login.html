@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QuizzBox - Sign In</title>
+  <link rel="stylesheet" href="css/main.css">
+  <style>
+    /* Login specific styles from user's CSS */
+    .auth-page { display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
+    .auth-side { background: linear-gradient(140deg, #fffbf4 0%, #fff 100%); padding: 3rem; display: flex; flex-direction: column; justify-content: center; gap: 1.8rem; }
+    .auth-side h1 { font-size: clamp(1.85rem, 3.5vw, 4rem); line-height: 1.08; margin: 0; }
+    .auth-side p { color: #475569; max-width: 420px; font-size: 1.1rem; margin: 0; }
+    .trusted { display: flex; align-items: center; gap: 0.9rem; margin-top: 1rem; }
+    .avatars { display: flex; gap: -0.3rem; }
+    .avatars span { width: 34px; height: 34px; border-radius: 50%; border: 2px solid #fff; background: linear-gradient(136deg, var(--primary), #fb923c); }
+    .trusted span { font-size: 0.88rem; color: #64748b; font-weight: 600; }
+    
+    .auth-panel { display: flex; align-items: center; justify-content: center; padding: 2rem; background: #fff; }
+    .card { width: min(460px, 100%); padding: 2.5rem; }
+    .card h2 { font-size: 2.1rem; margin-bottom: 0.5rem; }
+    .card > p { color: var(--muted); margin-bottom: 2rem; font-size: 1.05rem; }
+    
+    .auth-form { display: grid; gap: 1.2rem; }
+    .auth-form label { display: grid; gap: 0.5rem; font-size: 0.8rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; }
+    .auth-form input[type=email], .auth-form input[type=password] { width: 100%; border: 1px solid var(--border); border-radius: 12px; padding: 1rem; font-size: 1rem; background: #f8fafc; transition: var(--transition); }
+    .auth-form input:focus { outline: none; border-color: var(--primary); background: #fff; box-shadow: 0 0 0 4px var(--primary-subtle); }
+    
+    .pass-row { display: flex; align-items: center; justify-content: space-between; }
+    .pass-row a { font-size: 0.8rem; color: var(--primary); text-decoration: none; text-transform: none; letter-spacing: normal; font-weight: 600; }
+    
+    .checkbox-label { display: flex; align-items: center; gap: 0.6rem; font-weight: 500; color: #475569; text-transform: none !important; letter-spacing: normal !important; flex-direction: row !important; }
+    .checkbox-label input { width: 1.2rem; height: 1.2rem; accent-color: var(--primary); margin: 0; }
+    
+    .btn-submit { width: 100%; margin-top: 1rem; padding: 1rem; font-size: 1.1rem; }
+    
+    .error-msg { display: none; padding: 1rem; background: #fef2f2; color: #b91c1c; border-radius: 12px; margin-bottom: 1.5rem; font-size: 0.9rem; font-weight: 500; border: 1px solid #fca5a5; }
+    
+    .sign-up { margin-top: 2rem; text-align: center; color: #64748b; font-weight: 500; }
+    .sign-up a { color: var(--primary); text-decoration: none; font-weight: 700; }
+    
+    @media (max-width: 900px) { .auth-page { grid-template-columns: 1fr; } .auth-side { display: none; } .card { padding: 1.5rem; box-shadow: var(--shadow); border: 1px solid var(--border); border-radius: 20px; } .auth-panel { background: var(--bg); } }
+  </style>
+</head>
+<body>
+  <div class="auth-page">
+    <aside class="auth-side animate-fade">
+      <a href="index.html" style="text-decoration: none; margin-bottom: 2rem; display: block;">
+        <div style="font-size: 1.5rem; font-weight: 900; color: var(--primary);">QuizzBox</div>
+        <div style="font-size: 0.75rem; color: var(--text); font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;">Tele-Evaluation</div>
+      </a>
+      <h1>Master any subject with <span style="color: var(--primary);">editorial precision.</span></h1>
+      <p>A professional-grade evaluation platform designed for the modern educator and the curious learner.</p>
+      <div class="trusted">
+        <div class="avatars">
+          <span></span><span></span><span></span>
+        </div>
+        <span>Trusted by 10k+ researchers</span>
+      </div>
+    </aside>
+    
+    <main class="auth-panel">
+      <div class="card animate-fade" style="animation-delay: 0.1s;">
+        <h2>Welcome back</h2>
+        <p>Please enter your details to sign in.</p>
+        
+        <div id="login-error" class="error-msg"></div>
+        
+        <form id="login-form" class="auth-form">
+          <label>
+            Email Address
+            <input type="email" id="email" placeholder="name@institution.edu" required />
+          </label>
+          <label>
+            <div class="pass-row">
+              <span>Password</span>
+              <a href="#">Forgot Password?</a>
+            </div>
+            <input type="password" id="password" placeholder="••••••••" required />
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="remember" />
+            Remember for 30 days
+          </label>
+          <button type="submit" id="login-btn" class="btn btn-primary btn-submit">Sign In to QuizzBox</button>
+        </form>
+        
+        <p class="sign-up">Don't have an account? <a href="register.html">Create an account</a></p>
+      </div>
+    </main>
+  </div>
+
+  <script type="module">
+    import api from './js/api.js';
+    
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const errorDiv = document.getElementById('login-error');
+      const btn = document.getElementById('login-btn');
+      
+      try {
+        errorDiv.style.display = 'none';
+        btn.textContent = 'Signing in...';
+        btn.disabled = true;
+        
+        const response = await api.auth.login({ email, password });
+        
+        // Save token
+        localStorage.setItem('quizzbox_token', response.token);
+        if (response.user) {
+          localStorage.setItem('quizzbox_user', JSON.stringify(response.user));
+        }
+        
+        // Redirect to a placeholder dashboard for now
+        window.location.href = 'dashboard.html';
+      } catch (err) {
+        errorDiv.textContent = err.message || 'Invalid email or password.';
+        errorDiv.style.display = 'block';
+        
+        // Shake animation
+        errorDiv.animate([
+          { transform: 'translateX(0)' },
+          { transform: 'translateX(-5px)' },
+          { transform: 'translateX(5px)' },
+          { transform: 'translateX(-5px)' },
+          { transform: 'translateX(5px)' },
+          { transform: 'translateX(0)' }
+        ], { duration: 400 });
+      } finally {
+        btn.textContent = 'Sign In to QuizzBox';
+        btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
