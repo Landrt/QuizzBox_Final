@@ -8,197 +8,164 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
-:root {--bg:#f7f8fb;--surface:#fff;--text:#0f172a;--muted:#64748b;--primary:#f97316;--border:#e2e8f0;--shadow:0 14px 36px rgba(15,23,42,0.12);}*{box-sizing:border-box;}body{margin:0;font-family:'Inter',system-ui,-apple-system,Segoe UI,sans-serif;color:var(--text);background:var(--bg);}a{text-decoration:none;color:#334d7a;} .dashboard-layout{display:grid;grid-template-columns:260px 1fr;min-height:100vh;} .side-nav{background:#fff;border-right:1px solid var(--border);padding:1rem 1rem 1.1rem;} .nav-brand{display:flex;flex-direction:column;gap:.15rem;margin-bottom:1.3rem;} .nav-brand strong{font-size:1.1rem;color:var(--primary);} .nav-brand small{color:#8c9dbf;font-size:.7rem;letter-spacing:.09em;text-transform:uppercase;} .side-nav nav{display:flex;flex-direction:column;gap:.45rem;} .side-nav a{padding:.5rem .6rem;border-radius:.63rem;font-weight:700;color:#4c6b92;} .side-nav a.active{color:var(--primary);background:#fff4e6;} .side-actions{margin-top:1.4rem;display:flex;flex-direction:column;gap:.63rem;} .btn.primary{border:none;background:linear-gradient(125deg,var(--primary),#ff7a1c);color:#fff;border-radius:.65rem;padding:.65rem .7rem;font-weight:700;cursor:pointer;} .side-actions a{color:#446d9a;font-weight:700;} .main-area{padding:1rem 1.3rem;} .top-bar{display:flex;align-items:center;gap:.9rem;margin-bottom:.95rem;} .top-bar input{flex:1;padding:.68rem .78rem;border:1px solid #d8e6f6;border-radius:.7rem;} .top-links{display:flex;gap:.65rem;} .top-links a{color:#315073;font-weight:700;} .top-links a.active{color:var(--primary);} .top-user{width:36px;height:36px;border-radius:50%;background:#e8f1ff;display:grid;place-items:center; color: var(--primary); font-weight: bold;} .hero-title h1{margin:.2rem 0 0;font-size:2.1rem;} .hero-title p{margin:.33rem 0 0;color:#5d7090;} .cards-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.78rem;margin:1rem 0;}.eval-card{background:#fff;border:1px solid var(--border);border-radius:1rem;padding:.95rem;box-shadow:var(--shadow);position:relative;}.eval-card span.badge{position:absolute;top:.8rem;left:.8rem;font-size:.69rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;border-radius:.45rem;padding:.18rem .46rem;} .eval-card.shared span.badge{background:#fff4e8;color:#d8721a;} .eval-card.private span.badge{background:#eef3ff;color:#567bc2;} .eval-card h3{margin:1.1rem 0 .25rem;}.eval-card p{margin:0 0 .7rem;color:#576b8f;font-size:.9rem;line-height:1.3;} .code{font-size:.82rem;color:#435c82;font-weight:700;}.code strong{color:#f97316;} .card-actions{display:flex;gap:.5rem;font-size:.8rem;font-weight:700;margin-top:.78rem;}.card-actions a{color:#f97316;} .card-actions span{color:#94a0b7;} .eval-card.create-new{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4rem;border:2px dashed #e8edf7;color:#5f7197; cursor:pointer;} .new-icon{width:36px;height:36px;border-radius:50%;background:#fff6eb;color:#f97316;display:grid;place-items:center;font-weight:700;} .insight-banner{background:linear-gradient(120deg,#f97316,#ef7a13);border-radius:1rem;color:#fff;padding:1.15rem;display:grid;grid-template-columns:2fr 1fr;gap:1rem;align-items:center;} .insight-banner h2{margin:.15rem 0 .3rem;font-size:1.8rem;} .insight-banner p{margin:0;color:rgba(255,255,255,.9);} .stats{display:flex;gap:1.2rem;margin-top:.78rem;} .stats div{background:rgba(255,255,255,.15);border-radius:.7rem;padding:.7rem .86rem;}.stats strong{display:block;font-size:1.7rem;} .avg-diff{background:rgba(255,255,255,.27);}.dashboard-footer{margin-top:1rem;display:flex;justify-content:space-between;align-items:center;color:#8696bb;font-size:.85rem;} .dashboard-footer a{margin-left:.8rem;color:#d7e3f9;} @media(max-width:1120px){.cards-grid{grid-template-columns:repeat(2,minmax(0,1fr));}.dashboard-layout{grid-template-columns:220px 1fr;}} @media(max-width:820px){.dashboard-layout{grid-template-columns:1fr;}.side-nav{position:static;width:auto;}.top-bar{flex-wrap:wrap;}.top-user{margin-left:auto;}.insight-banner{grid-template-columns:1fr;}}
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --primary: #f97316;
+      --border: #e2e8f0;
+      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.5;
+    }
+    a { text-decoration: none; color: inherit; transition: color 0.2s; }
+    .container { width: min(1200px, calc(100% - 2rem)); margin: 0 auto; }
+
+    /* Header */
+    .page-header { background: #fff; border-bottom: 1px solid var(--border); padding: 0.75rem 0; position: sticky; top: 0; z-index: 100; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .header-inner { display: flex; align-items: center; justify-content: space-between; }
+    .brand { font-size: 1.4rem; font-weight: 800; color: var(--primary); display: flex; flex-direction: column; line-height: 1; }
+    .brand small { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.2rem; }
+    
+    .top-nav { display: flex; gap: 1.5rem; align-items: center; }
+    .top-nav a { font-weight: 600; color: #475569; font-size: 0.95rem; }
+    .top-nav a:hover, .top-nav a.active { color: var(--primary); }
+    
+    .profile-section { display: flex; align-items: center; gap: 1rem; }
+    .profile { width: 38px; height: 38px; border-radius: 50%; background: #fff4e6; color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 700; cursor: pointer; border: 2px solid transparent; transition: 0.2s; }
+    .profile:hover { border-color: var(--primary); transform: scale(1.05); }
+
+    /* Main Content */
+    .main-content { padding: 2.5rem 0; }
+    .hero-section { margin-bottom: 2.5rem; }
+    .hero-section h1 { margin: 0; font-size: 2.25rem; font-weight: 800; }
+    .hero-section p { margin: 0.5rem 0 0; color: var(--muted); font-size: 1.1rem; }
+
+    /* Search & Filters */
+    .search-row { display: flex; gap: 1rem; margin-bottom: 2rem; align-items: center; }
+    .search-input-wrap { position: relative; flex: 1; }
+    #search-input { width: 100%; padding: 0.8rem 1rem; border: 1px solid var(--border); border-radius: 0.75rem; font-size: 1rem; background: #fff; transition: 0.2s; }
+    #search-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1); }
+    .btn.primary { background: var(--primary); color: #fff; border: none; padding: 0.8rem 1.5rem; border-radius: 0.75rem; font-weight: 700; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 0.5rem; }
+    .btn.primary:hover { opacity: 0.9; transform: translateY(-1px); }
+
+    /* Cards Grid */
+    .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 3rem; }
+    .eval-card { background: #fff; border: 1px solid var(--border); border-radius: 1.25rem; padding: 1.5rem; box-shadow: var(--shadow); position: relative; transition: 0.2s; }
+    .eval-card:hover { transform: translateY(-4px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
+    .badge { position: absolute; top: 1.25rem; right: 1.25rem; padding: 0.35rem 0.75rem; border-radius: 99px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
+    .badge.shared { background: #fff7ed; color: #c2410c; }
+    .badge.private { background: #f0f9ff; color: #0369a1; }
+    .eval-card h3 { margin: 0.5rem 0 0.5rem; font-size: 1.25rem; }
+    .eval-card p { margin: 0 0 1.25rem; color: var(--muted); font-size: 0.95rem; display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .card-footer { border-top: 1px solid var(--border); padding-top: 1rem; margin-top: 1rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: var(--muted); font-weight: 500; }
+    .card-footer strong { color: var(--text); }
+    .card-actions { display: flex; gap: 1rem; margin-top: 1.25rem; }
+    .card-actions a { color: var(--primary); font-weight: 700; font-size: 0.9rem; }
+
+    .create-card { border: 2px dashed var(--border); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: var(--muted); cursor: pointer; min-height: 200px; background: transparent; box-shadow: none; }
+    .create-card:hover { border-color: var(--primary); color: var(--primary); background: #fff; }
+    .create-card .icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+
+    /* Banner Stats */
+    .stats-banner { background: #1e293b; border-radius: 1.5rem; padding: 2.5rem; color: #fff; display: flex; flex-wrap: wrap; gap: 3rem; align-items: center; }
+    .stats-header { flex: 1; min-width: 300px; }
+    .stats-header h2 { margin: 0; font-size: 1.75rem; }
+    .stats-header p { margin: 0.5rem 0 0; color: #94a3b8; }
+    .stats-list { display: flex; gap: 2rem; }
+    .stat-item { display: flex; flex-direction: column; }
+    .stat-item strong { font-size: 2rem; font-weight: 800; }
+    .stat-item span { color: #94a3b8; font-size: 0.85rem; text-transform: uppercase; font-weight: 700; }
+
+    @media (max-width: 768px) {
+      .top-nav { display: none; }
+      .stats-banner { flex-direction: column; align-items: flex-start; gap: 2rem; }
+    }
   </style>
 </head>
 <body>
-  <div class="dashboard-layout">
-    <aside class="side-nav">
-      <div class="nav-brand">
-        <a href="index.html" style="text-decoration: none;">
-          <strong>QuizzBoxAdmin</strong><small style="display: block;">Tele-Evaluation Suite</small>
-        </a>
-      </div>
-      <nav>
-        <a class="active" href="dashboard.html">Overview</a>
-        <a id="my-evaluations-link" href="my-evaluations.html">My Evaluations</a>
-        <a id="analytics-link" href="results.html">Analytics</a>
+  <header class="page-header">
+    <div class="container header-inner">
+      <a href="dashboard.html" class="brand">
+        QuizzBox <strong>Admin</strong>
+        <small>Clinical Evaluation Suite</small>
+      </a>
+      <nav class="top-nav">
+        <a href="index.html">Home</a>
+        <a href="dashboard.html" class="active">Overview</a>
+        <a href="my-evaluations.html">Assessments</a>
+        <a href="results.html">Analytics</a>
+        <a href="create.html">Create</a>
+        <a href="join.html">Join</a>
       </nav>
-      <div class="side-actions">
-        <button class="btn primary" onclick="window.location.href='create.html'">+ New Assessment</button>
-        <a id="help-center-link" href="#">Help Center</a>
-        <a href="#" id="logout-btn">Log Out</a>
+      <div class="profile-section">
+        <div class="profile" id="user-initial" title="Click to Logout">U</div>
       </div>
-    </aside>
+    </div>
+  </header>
 
-    <main class="main-area">
-      <header class="top-bar">
-        <input id="search-input" placeholder="Search evaluations..." />
-        <div class="top-links"><a href="dashboard.html" class="active">Dashboard</a><a href="create.html">Create</a><a href="join.html">Join</a></div>
-        <div class="top-user" id="user-initial">U</div>
-      </header>
+  <main class="container main-content">
+    <section class="hero-section">
+      <h1>Bienvenue, <span id="user-greeting">Utilisateur</span></h1>
+      <p>Gérez vos évaluations, surveillez les progrès et analysez les résultats cliniques.</p>
+    </section>
 
-      <section class="hero-title">
-        <h1>Active Evaluations, <span id="user-greeting">Educator</span></h1>
-        <p>Manage your active clinical assessments, monitor student progress, and review shared results across the curriculum.</p>
-      </section>
+    <div class="search-row">
+      <div class="search-input-wrap">
+        <input id="search-input" placeholder="Rechercher par titre ou description..." />
+      </div>
+      <button class="btn primary" onclick="window.location.href='create.html'">+ Nouvelle évaluation</button>
+    </div>
 
-      <section class="cards-grid" id="evaluations-container">
-        <!-- Will be populated by JS -->
-        <article class="eval-card create-new" onclick="window.location.href='create.html'">
-          <div class="new-icon">+</div>
-          <h3>Create Evaluation</h3>
-          <p>Begin building a new clinical assessment or exam session.</p>
-        </article>
-      </section>
+    <section class="cards-grid" id="evaluations-container">
+      <!-- To be populated -->
+      <article class="eval-card create-card" onclick="window.location.href='create.html'">
+        <div class="icon">+</div>
+        <h3>Créer une évaluation</h3>
+        <p>Créer un nouveau module d'évaluation clinique</p>
+      </article>
+    </section>
 
-      <section class="insight-banner">
-        <h2>Usage Insights</h2>
-        <p>Suivez vos évaluations en temps réel et prenez des actions rapides.</p>
-        <div class="stats">
-          <div><strong id="total-evals">0</strong><span>Total Evaluations</span></div>
-          <div><strong id="shared-evals">0</strong><span>Shared</span></div>
-          <div class="avg-diff"><strong id="private-evals">0</strong><span>Private</span></div>
+    <section class="stats-banner">
+      <div class="stats-header">
+        <h2>Aperçu Rapide</h2>
+        <p>En temps réel, gardez un œil sur votre impact et vos évaluations.</p>
+      </div>
+      <div class="stats-list">
+        <div class="stat-item">
+          <strong id="total-evals">0</strong>
+          <span>Total Évaluations</span>
         </div>
-      </section>
+        <div class="stat-item">
+          <strong id="shared-evals">0</strong>
+          <span>Partagées</span>
+        </div>
+        <div class="stat-item">
+          <strong id="private-evals">0</strong>
+          <span>Privées</span>
+        </div>
+      </div>
+    </section>
+  </main>
 
-      <footer class="dashboard-footer">
-        <small>© 2024 QuizzBox Tele-Evaluation. All rights reserved.</small>
-        <div><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Support</a></div>
-      </footer>
-    </main>
-  </div>
+  <footer style="padding: 3rem 0; border-top: 1px solid var(--border); margin-top: 4rem; color: var(--muted); font-size: 0.9rem;">
+    <div class="container" style="display: flex; justify-content: space-between;">
+      <span>© 2024 QuizzBox Tele-Evaluation. Tous droits réservés.</span>
+      <div style="display: flex; gap: 1.5rem;">
+        <a href="#">Support</a>
+        <a href="#">Confidentialité</a>
+        <a href="#">Conditions</a>
+      </div>
+    </div>
+  </footer>
 
-  <script type="module">
-    import api from './js/api.js';
-
-    // 1. Authentication Check
-    const token = localStorage.getItem('quizzbox_token');
-    if (!token) {
-      window.location.replace('login.html');
-    }
-
-    // 2. Load User Data
-    async function initDashboard() {
-      try {
-        const cachedUser = localStorage.getItem('quizzbox_user');
-        if (cachedUser) {
-          updateUserUI(JSON.parse(cachedUser));
-        }
-
-        const userData = await api.auth.getProfile();
-        // Persist fresh normalized user to localStorage
-        localStorage.setItem('quizzbox_user', JSON.stringify(userData));
-        updateUserUI(userData);
-        
-        await fetchEvaluations();
-      } catch (err) {
-        console.error("Session expired or invalid:", err);
-        localStorage.removeItem('quizzbox_token');
-        localStorage.removeItem('quizzbox_user');
-        window.location.replace('login.html');
-      }
-    }
-
-    function updateUserUI(user) {
-      const nameParts = user.name ? user.name.split(' ') : ['User'];
-      const initial = nameParts[0].charAt(0).toUpperCase();
-      
-      document.getElementById('user-initial').textContent = initial;
-      document.getElementById('user-greeting').textContent = nameParts[0];
-    }
-
-    async function fetchEvaluations(query = '') {
-      try {
-        const evals = await api.evaluations.list();
-        const container = document.getElementById('evaluations-container');
-        container.innerHTML = '';
-
-        // Add create card first
-        const createCard = document.createElement('article');
-        createCard.className = 'eval-card create-new';
-        createCard.onclick = () => window.location.href = 'create.html';
-        createCard.innerHTML = \`
-          <div class="new-icon">+</div>
-          <h3>Create Evaluation</h3>
-          <p>Begin building a new clinical assessment or exam session.</p>
-        \`;
-        container.appendChild(createCard);
-
-        if (!evals || evals.length === 0) {
-          return updateDashboardStats(0, 0, 0);
-        }
-
-        const filtered = evals.filter(ev => {
-          const title = (ev.title || '').toLowerCase();
-          const desc = (ev.description || '').toLowerCase();
-          return title.includes(query.toLowerCase()) || desc.includes(query.toLowerCase());
-        });
-
-        let sharedCount = 0;
-        let privateCount = 0;
-
-        filtered.forEach(ev => {
-          const isShared = ev.visibility === 'SHARED';
-          if (isShared) sharedCount += 1; else privateCount += 1;
-
-          const el = document.createElement('article');
-          el.className = \`eval-card \${isShared ? 'shared' : 'private'}\`;
-          el.innerHTML = \`
-            <span class="badge">\${isShared ? 'Shared' : 'Private'}</span>
-            <h3>\${ev.title}</h3>
-            <p>\${ev.description || 'Custom clinical evaluation module.'}</p>
-            <div class="code"><strong>\${ev._count?.questions ?? 0} questions · \${ev.timePerQuestion ?? '--'}s/Q</strong></div>
-            \${isShared ? \`<div class="code">Code : <strong>\${ev.accessCode}</strong></div>\` : ''}
-            <div class="card-actions">
-              <a href="create.html?edit=\${ev.id}">Edit</a>
-              <a href="results.html?evaluationId=\${ev.id}">Results</a>
-              \${isShared ? \`<a href="join.html?code=\${ev.accessCode}">Join</a>\` : ''}
-            </div>
-          \`;
-          container.appendChild(el);
-        });
-
-        updateDashboardStats(filtered.length, sharedCount, privateCount);
-      } catch (err) {
-        console.error('Failed to fetch evaluations', err);
-      }
-    }
-
-    function updateDashboardStats(total, shared, privateCount) {
-      document.getElementById('total-evals').textContent = total;
-      document.getElementById('shared-evals').textContent = shared;
-      document.getElementById('private-evals').textContent = privateCount;
-    }
-
-    // Logout logic
-    document.getElementById('logout-btn').addEventListener('click', (e) => {
-      e.preventDefault();
-      localStorage.removeItem('quizzbox_token');
-      localStorage.removeItem('quizzbox_user');
-      window.location.replace('login.html');
-    });
-
-    document.getElementById('my-evaluations-link').addEventListener('click', (e) => {
-      e.preventDefault();
-      window.location.href = 'my-evaluations.html';
-    });
-
-    document.getElementById('analytics-link').addEventListener('click', (e) => {
-      e.preventDefault();
-      window.location.href = 'results.html';
-    });
-
-    document.getElementById('help-center-link').addEventListener('click', (e) => {
-      e.preventDefault();
-      window.location.href = 'help.html';
-    });
-
-    document.getElementById('search-input').addEventListener('input', (e) => {
-      fetchEvaluations(e.target.value);
-    });
-
-    initDashboard();
-  </script>
+  <script src="./js/dashboard.js" type="module"></script>
 </body>
 </html>

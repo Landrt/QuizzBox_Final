@@ -8,99 +8,115 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
-:root {--bg:#f7f8fb;--surface:#fff;--text:#0f172a;--muted:#64748b;--primary:#f97316;--border:#e2e8f0;}body{margin:0;font-family:'Inter',system-ui,-apple-system,Segoe UI,sans-serif;color:var(--text);background:var(--bg);} a{text-decoration:none;color:#334d7a;} .container{width:min(1180px,calc(100% - 2rem));margin:0 auto;padding:1rem 0;} .page-header{background:#fff;border-bottom:1px solid var(--border);padding:1rem 0;margin-bottom:1rem;} .page-header h1{margin:0;font-size:1.8rem;} .page-header p{margin:.4rem 0 0;color:#64748b;} .cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:0.9rem;margin-top:1rem;} .eval-card{background:#fff;border:1px solid var(--border);border-radius:0.85rem;padding:1rem;position:relative;box-shadow:0 10px 20px rgba(25,41,67,.08);} .eval-card h3{margin:.2rem 0 .5rem;} .eval-card p{margin:0 0 .65rem;color:#566984;line-height:1.25;} .badge{display:inline-flex;align-items:center;gap:.35rem;font-size:.72rem;font-weight:700;text-transform:uppercase;border-radius:.4rem;padding:.2rem .55rem;background:#f9f2e7;color:#d97706;} .card-actions{margin-top:.8rem;display:flex;gap:.55rem;} .card-actions button,.card-actions a{border:none;background:#eef4ff;color:#2166aa;border-radius:.5rem;padding:.4rem .7rem;font-size:.79rem;font-weight:700;cursor:pointer;} .card-actions button.delete{background:#ffeaed;color:#c0213e;} .top-links{margin-top:0.75rem;display:flex;gap:.8rem;} .top-links a{color:#326491;font-weight:700;} .top-links a.active{color:var(--primary);} .info{margin-top:1rem;color:#47536d;font-size:.9rem;}
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --primary: #f97316;
+      --border: #e2e8f0;
+      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.5;
+    }
+    a { text-decoration: none; color: inherit; transition: color 0.2s; }
+    .container { width: min(1200px, calc(100% - 2rem)); margin: 0 auto; }
+
+    /* Header */
+    .page-header { background: #fff; border-bottom: 1px solid var(--border); padding: 0.75rem 0; position: sticky; top: 0; z-index: 100; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .header-inner { display: flex; align-items: center; justify-content: space-between; }
+    .brand { font-size: 1.4rem; font-weight: 800; color: var(--primary); display: flex; flex-direction: column; line-height: 1; }
+    .brand small { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.2rem; }
+    
+    .top-nav { display: flex; gap: 1.5rem; align-items: center; }
+    .top-nav a { font-weight: 600; color: #475569; font-size: 0.95rem; }
+    .top-nav a:hover, .top-nav a.active { color: var(--primary); }
+    
+    .profile-section { display: flex; align-items: center; gap: 1rem; }
+    .profile { width: 38px; height: 38px; border-radius: 50%; background: #fff4e6; color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 700; cursor: pointer; border: 2px solid transparent; transition: 0.2s; }
+    .profile:hover { border-color: var(--primary); transform: scale(1.05); }
+
+    /* Main Content */
+    .main-content { padding: 2.5rem 0; }
+    .page-title { margin-bottom: 2rem; }
+    .page-title h1 { margin: 0; font-size: 2rem; font-weight: 800; }
+    .page-title p { margin: 0.4rem 0 0; color: var(--muted); }
+
+    /* Search row */
+    .search-row { display: flex; gap: 1rem; margin-bottom: 2.5rem; }
+    #search-input { flex: 1; padding: 0.8rem 1rem; border: 1px solid var(--border); border-radius: 0.75rem; font-size: 1rem; }
+    #search-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1); }
+    .info-bar { margin-bottom: 1.5rem; color: var(--muted); font-size: 0.9rem; font-weight: 600; }
+
+    /* Cards Grid */
+    .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+    .eval-card { background: #fff; border: 1px solid var(--border); border-radius: 1.25rem; padding: 1.5rem; box-shadow: var(--shadow); position: relative; }
+    .badge { position: absolute; top: 1.25rem; right: 1.25rem; padding: 0.35rem 0.75rem; border-radius: 99px; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; }
+    .badge.shared { background: #fff7ed; color: #c2410c; }
+    .badge.private { background: #f0f9ff; color: #0369a1; }
+    .eval-card h3 { margin: 0.5rem 0 0.5rem; font-size: 1.25rem; }
+    .eval-card p { margin: 0 0 1.25rem; color: var(--muted); font-size: 0.95rem; }
+    .card-footer { border-top: 1px solid var(--border); padding-top: 1rem; margin-top: 1rem; color: var(--muted); font-size: 0.85rem; font-weight: 500; }
+    .card-actions { display: flex; gap: 0.75rem; margin-top: 1.25rem; }
+    .btn-action { padding: 0.5rem 0.75rem; border-radius: 0.6rem; font-weight: 700; font-size: 0.85rem; border: 1px solid var(--border); background: #f8fafc; cursor: pointer; transition: 0.2s; }
+    .btn-action:hover { background: #f1f5f9; border-color: var(--muted); }
+    .btn-action.delete { color: #dc2626; border-color: #fee2e2; background: #fef2f2; }
+    .btn-action.delete:hover { background: #fee2e2; }
+
+    .bottom-actions { margin-top: 3rem; }
+    .btn.primary { background: var(--primary); color: #fff; border: none; padding: 0.8rem 1.5rem; border-radius: 0.75rem; font-weight: 700; cursor: pointer; }
+
+    @media (max-width: 768px) {
+      .top-nav { display: none; }
+    }
   </style>
 </head>
 <body>
-  <main class="container">
-    <header class="page-header">
-      <h1>Mes évaluations</h1>
-      <p>Liste complète de vos évaluations. Vous pouvez modifier, supprimer ou recréer une évaluation.</p>
-      <div class="top-links">
-        <a href="dashboard.html">Dashboard</a>
-        <a href="create.html">Créer</a>
-        <a class="active" href="my-evaluations.html">My Evaluations</a>
+  <header class="page-header">
+    <div class="container header-inner">
+      <a href="dashboard.html" class="brand">
+        QuizzBox <strong>Admin</strong>
+        <small>Clinical Evaluation Suite</small>
+      </a>
+      <nav class="top-nav">
+        <a href="index.html">Home</a>
+        <a href="dashboard.html">Overview</a>
+        <a href="my-evaluations.html" class="active">Assessments</a>
+        <a href="results.html">Analytics</a>
+        <a href="create.html">Create</a>
+        <a href="join.html">Join</a>
+      </nav>
+      <div class="profile-section">
+        <div class="profile" id="user-initial" title="Click to Logout">U</div>
       </div>
-    </header>
+    </div>
+  </header>
 
-    <section>
-      <input id="search-input" placeholder="Rechercher par titre ou description..." style="width:100%;padding:.75rem;border:1px solid #d8e6f6;border-radius:.65rem;" />
-      <div class="info" id="stats-line">Chargement...</div>
-      <div class="cards-grid" id="evaluations-container"></div>
+  <main class="container main-content">
+    <div class="page-title">
+      <h1>Mes évaluations</h1>
+      <p>Gérez vos modules de télé-évaluation et vos sessions actives.</p>
+    </div>
+
+    <section class="search-row">
+      <input id="search-input" placeholder="Rechercher par titre ou description..." />
     </section>
 
-    <section style="margin-top:1.2rem;">
-      <button class="btn primary" style="border:none;background:linear-gradient(125deg,var(--primary),#ff7a1c);color:#fff;border-radius:.6rem;padding:.65rem .9rem;cursor:pointer;" onclick="window.location.href='create.html';">+ Nouvelle évaluation</button>
-    </section>
+    <div class="info-bar" id="stats-line">Chargement...</div>
+    
+    <div class="cards-grid" id="evaluations-container"></div>
+
+    <div class="bottom-actions">
+      <button class="btn primary" onclick="window.location.href='create.html';">+ Nouvelle évaluation</button>
+    </div>
   </main>
 
-  <script type="module">
-    import api from './js/api.js';
-
-    const token = localStorage.getItem('quizzbox_token');
-    if (!token) {
-      window.location.replace('login.html');
-    }
-
-    const statsLine = document.getElementById('stats-line');
-    const container = document.getElementById('evaluations-container');
-
-    function formatRow(ev) {
-      const isShared = ev.visibility === 'SHARED';
-      return `
-        <article class="eval-card">
-          <div class="badge">${isShared ? 'Shared' : 'Private'}</div>
-          <h3>${ev.title || 'Sans titre'}</h3>
-          <p>${ev.description || 'Aucune description'}</p>
-          <p>${ev._count?.questions || 0} questions · ${ev.timePerQuestion || 'N/A'} sec/question</p>
-          ${isShared ? `<p>Code : <strong>${ev.accessCode || '—'}</strong></p>` : ''}
-          <div class="card-actions">
-            <a href="create.html?edit=${ev.id}">Recomposer</a>
-            <a href="results.html?evaluationId=${ev.id}">Résultats</a>
-            <button class="delete" data-id="${ev.id}">Supprimer</button>
-          </div>
-        </article>
-      `;
-    }
-
-    async function loadEvaluations(filter = '') {
-      try {
-        const evals = await api.evaluations.list();
-
-        const filtered = evals.filter(ev => {
-          const search = filter.toLowerCase();
-          return ev.title.toLowerCase().includes(search) || (ev.description || '').toLowerCase().includes(search);
-        });
-
-        container.innerHTML = filtered.length ? filtered.map(ev => formatRow(ev)).join('') : '<p>Aucune évaluation trouvée.</p>';
-
-        statsLine.textContent = `Total: ${filtered.length} | Partagées: ${filtered.filter(e => e.visibility === 'SHARED').length} | Privées: ${filtered.filter(e => e.visibility === 'PRIVATE').length}`;
-
-        container.querySelectorAll('button.delete').forEach(btn => {
-          btn.addEventListener('click', async () => {
-            const evalId = btn.dataset.id;
-            if (!confirm('Supprimer cette évaluation ?')) return;
-
-            try {
-              await api.evaluations.delete(evalId);
-              await loadEvaluations(document.getElementById('search-input').value);
-            } catch (error) {
-              console.error('Suppression échouée', error);
-              alert('Impossible de supprimer l\'évaluation. Rafraîchissez la page et réessayez.');
-            }
-          });
-        });
-      } catch (err) {
-        console.error('Erreur chargement évaluations', err);
-        statsLine.textContent = 'Erreur de chargement';
-      }
-    }
-
-    document.getElementById('search-input').addEventListener('input', (e) => {
-      loadEvaluations(e.target.value);
-    });
-
-    loadEvaluations();
-  </script>
+  <script src="./js/my-evaluations.js" type="module"></script>
 </body>
 </html>

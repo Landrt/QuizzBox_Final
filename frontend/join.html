@@ -8,26 +8,94 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
-:root {--bg:#f8fafc;--surface:#fff;--text:#0f172a;--muted:#64748b;--primary:#f97316;--border:#e4ecf7;--shadow:0 18px 44px rgba(15,23,42,0.12);} *{box-sizing:border-box;} body{margin:0;min-height:100vh;display:flex;flex-direction:column;font-family:'Inter',system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--text);} .container{width:min(1180px,calc(100% - 2rem));margin:0 auto;} .site-header{background:#fff;border-bottom:1px solid var(--border);} .header-inner{display:flex;align-items:center;justify-content:space-between;height:72px;} .brand{font-size:1.4rem;font-weight:800;color:var(--primary);text-decoration:none;} .nav{display:flex;gap:1.1rem;} .nav a{text-decoration:none;color:#2a3e5f;font-weight:600;} .nav a.active{color:var(--primary);} .profile{font-size:1.1rem;width:36px;height:36px;border-radius:50%;background:#fff3e3;color:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:bold;} .join-page{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;padding:2rem 1rem;} .join-hero{text-align:center;margin-bottom:2rem;} .join-hero h1{margin:0;font-size:2.4rem;} .join-hero p{margin:.5rem auto 0;color:#56687f;font-size:1.05rem;max-width:500px;} .join-box{background:var(--surface);border:1px solid var(--border);border-radius:1rem;padding:2rem;box-shadow:var(--shadow);width:min(600px,100%);} .code-input{display:flex;gap:.75rem;align-items:center;} .input-wrapper{position:relative;flex:1;} .input-wrapper span{position:absolute;left:1rem;top:50%;transform:translateY(-50%);color:#94a3b8;font-size:1.2rem;} .input-wrapper input{width:100%;padding:1rem 1rem 1rem 2.8rem;border:1px solid #dbe7f3;border-radius:.7rem;font-size:1.1rem;color:#243656;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;transition:border-color 0.2s;} .input-wrapper input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(249,115,22,0.1);} .btn{border:none;border-radius:.75rem;cursor:pointer;font-weight:700;padding:1rem 1.5rem;font-size:1.05rem;transition:.2s;white-space:nowrap;} .btn.primary{background:linear-gradient(120deg,var(--primary),#f6710e);color:#fff;} .btn.primary:hover{opacity:0.9;transform:translateY(-1px);box-shadow:0 4px 12px rgba(249,115,22,0.2);} .help-link{display:block;text-align:center;margin:1.5rem 0 0;color:var(--primary);text-decoration:none;font-weight:700;} .badges{display:flex;justify-content:center;gap:.6rem;margin-top:2rem;} .badges span{display:inline-flex;align-items:center;gap:.35rem;padding:.4rem .72rem;border-radius:999px;background:#eef4ff;color:#3d5484;font-size:.78rem;border:1px solid #d9e6f8;font-weight:600;} .site-footer{padding:1.5rem 0;background:#fff;border-top:1px solid var(--border);} .footer-inner{display:flex;justify-content:space-between;align-items:center;font-size:.85rem;color:#8b9cbf;} .footer-inner nav a{margin-left:1.5rem;color:#5e769e;text-decoration:none;font-weight:500;} .error-msg{display:none;padding:1rem;background:#fef2f2;color:#b91c1c;border-radius:.75rem;border:1px solid #fca5a5;margin-bottom:1.5rem;font-size:.9rem;font-weight:500;text-align:center;} @media (max-width: 600px){.code-input{flex-direction:column;}.btn.primary{width:100%;}.join-box{padding:1.5rem;} .nav{display:none;} .profile{display:none;} .footer-inner{flex-direction:column;gap:1rem;}}
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --primary: #f97316;
+      --border: #e2e8f0;
+      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.5;
+    }
+    a { text-decoration: none; color: inherit; transition: color 0.2s; }
+    .container { width: min(1200px, calc(100% - 2rem)); margin: 0 auto; }
+
+    /* Header */
+    .page-header { background: #fff; border-bottom: 1px solid var(--border); padding: 0.75rem 0; position: sticky; top: 0; z-index: 100; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .header-inner { display: flex; align-items: center; justify-content: space-between; }
+    .brand { font-size: 1.4rem; font-weight: 800; color: var(--primary); display: flex; flex-direction: column; line-height: 1; }
+    .brand small { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.2rem; }
+    
+    .top-nav { display: flex; gap: 1.5rem; align-items: center; }
+    .top-nav a { font-weight: 600; color: #475569; font-size: 0.95rem; }
+    .top-nav a:hover, .top-nav a.active { color: var(--primary); }
+    
+    .profile-section { display: flex; align-items: center; gap: 1rem; }
+    .profile { width: 38px; height: 38px; border-radius: 50%; background: #fff4e6; color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 700; cursor: pointer; border: 2px solid transparent; transition: 0.2s; }
+    .profile:hover { border-color: var(--primary); transform: scale(1.05); }
+
+    .join-page { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; padding: 2rem 1rem; }
+    .join-hero { text-align: center; margin-bottom: 2rem; }
+    .join-hero h1 { margin: 0; font-size: 2.4rem; }
+    .join-hero p { margin: .5rem auto 0; color: var(--muted); font-size: 1.05rem; max-width: 500px; }
+    .join-box { background: var(--surface); border: 1px solid var(--border); border-radius: 1rem; padding: 2rem; box-shadow: var(--shadow); width: min(600px, 100%); }
+    .code-input { display: flex; gap: .75rem; align-items: center; }
+    .input-wrapper { position: relative; flex: 1; }
+    .input-wrapper span { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 1.2rem; }
+    .input-wrapper input { width: 100%; padding: 1rem 1rem 1rem 2.8rem; border: 1px solid #dbe7f3; border-radius: .7rem; font-size: 1.1rem; color: #243656; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; transition: border-color 0.2s; }
+    .input-wrapper input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1); }
+    .btn { border: none; border-radius: .75rem; cursor: pointer; font-weight: 700; padding: 1rem 1.5rem; font-size: 1.05rem; transition: .2s; white-space: nowrap; }
+    .btn.primary { background: linear-gradient(120deg,var(--primary),#f6710e); color: #fff; }
+    .btn.primary:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(249, 115, 22, 0.2); }
+    .help-link { display: block; text-align: center; margin: 1.5rem 0 0; color: var(--primary); text-decoration: none; font-weight: 700; }
+    .badges { display: flex; justify-content: center; gap: .6rem; margin-top: 2rem; }
+    .badges span { display: inline-flex; align-items: center; gap: .35rem; padding: .4rem .72rem; border-radius: 999px; background: #eef4ff; color: #3d5484; font-size: .78rem; border: 1px solid #d9e6f8; font-weight: 600; }
+    .site-footer { padding: 1.5rem 0; background: #fff; border-top: 1px solid var(--border); margin-top: auto; }
+    .footer-inner { display: flex; justify-content: space-between; align-items: center; font-size: .85rem; color: #8b9cbf; }
+    .footer-inner nav a { margin-left: 1.5rem; color: #5e769e; text-decoration: none; font-weight: 500; }
+    .error-msg { display: none; padding: 1rem; background: #fef2f2; color: #b91c1c; border-radius: .75rem; border: 1px solid #fca5a5; margin-bottom: 1.5rem; font-size: .9rem; font-weight: 500; text-align: center; }
+    @media (max-width: 600px) {
+      .top-nav { display: none; }
+      .code-input { flex-direction: column; }
+      .btn.primary { width: 100%; }
+      .join-box { padding: 1.5rem; }
+      .footer-inner { flex-direction: column; gap: 1rem; }
+    }
   </style>
 </head>
 <body>
-  <header class="site-header">
+  <header class="page-header">
     <div class="container header-inner">
-      <a href="dashboard.html" class="brand">QuizzBox</a>
-      <nav class="nav">
-        <a href="dashboard.html">Dashboard</a>
+      <a href="dashboard.html" class="brand">
+        QuizzBox <strong>Admin</strong>
+        <small>Clinical Evaluation Suite</small>
+      </a>
+      <nav class="top-nav">
+        <a href="index.html">Home</a>
+        <a href="dashboard.html">Overview</a>
+        <a href="my-evaluations.html">Assessments</a>
+        <a href="results.html">Analytics</a>
         <a href="create.html">Create</a>
-        <a class="active" href="join.html">Join</a>
+        <a href="join.html" class="active">Join</a>
       </nav>
-      <div class="profile" id="user-initial">U</div>
+      <div class="profile-section">
+        <div class="profile" id="user-initial" title="Click to Logout">U</div>
+      </div>
     </div>
   </header>
 
   <main class="join-page">
     <section class="join-hero">
-      <h1>Join Evaluation</h1>
-      <p>Enter your unique evaluation code to securely access the QuizzBox portal.</p>
+      <h1>Rejoindre une évaluation</h1>
+      <p>Entrez votre code d'accès unique pour accéder à la session d'évaluation QuizzBox.</p>
     </section>
 
     <section class="join-box">
@@ -35,14 +103,14 @@
       <form id="join-form" class="code-input">
         <div class="input-wrapper">
           <span>🔑</span>
-          <input type="text" id="access-code" placeholder="Access Code (e.g. XJ9-K2L)" aria-label="Access Code" required autocomplete="off" />
+          <input type="text" id="access-code" placeholder="Code d'accès (ex: XJ9-K2L)" aria-label="Code d'accès" required autocomplete="off" />
         </div>
-        <button type="submit" id="join-btn" class="btn primary">Join Session →</button>
+        <button type="submit" id="join-btn" class="btn primary">Rejoindre la session →</button>
       </form>
-      <a href="#" class="help-link">Trouble joining?</a>
+      <a href="#" class="help-link">Un problème pour rejoindre ?</a>
       <div class="badges">
-        <span>🔒 Secure Session</span>
-        <span>⏱️ Time Validated</span>
+        <span>🔒 Session sécurisée</span>
+        <span>⏱️ Validé par le temps</span>
       </div>
     </section>
   </main>
@@ -51,9 +119,9 @@
     <div class="container footer-inner">
       <small>© 2024 QuizzBox Tele-Evaluation. All rights reserved.</small>
       <nav>
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms of Service</a>
-        <a href="#">Contact Support</a>
+        <a href="#">Confidentialité</a>
+        <a href="#">Conditions</a>
+        <a href="#">Support</a>
       </nav>
     </div>
   </footer>
@@ -77,6 +145,13 @@
       // But typically, a user needs an identity to take a test.
       window.location.replace('login.html');
     }
+
+    // Logout logic
+    document.getElementById('user-initial').addEventListener('click', () => {
+      localStorage.removeItem('quizzbox_token');
+      localStorage.removeItem('quizzbox_user');
+      window.location.replace('login.html');
+    });
 
     // 2. Handle Join Submission
     document.getElementById('join-form').addEventListener('submit', async (e) => {

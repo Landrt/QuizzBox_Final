@@ -13,7 +13,8 @@ export class AuthService {
       throw new Error('User already exists');
     }
 
-    const hashedPassword = await bcrypt.hash(data.password, 10);
+    const rounds = process.env.NODE_ENV === 'development' ? 1 : 10;
+    const hashedPassword = await bcrypt.hash(data.password, rounds);
 
     const user = await prisma.user.create({
       data: {

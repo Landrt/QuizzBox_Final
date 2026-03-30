@@ -8,20 +8,62 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
-:root {--bg:#f7f8fc;--surface:#fff;--text:#0f172a;--muted:#64748b;--primary:#f97316;--border:#e5ebf5;--shadow:0 17px 45px rgba(15,23,42,0.12);} *{box-sizing:border-box;} body{margin:0; min-height:100vh; display:flex; flex-direction:column; font-family:'Inter',system-ui,-apple-system,Segoe UI,sans-serif; color:var(--text); background:var(--bg);} .container{width:min(1180px,calc(100% - 2rem)); margin:0 auto;} .site-header{background:#fff;border-bottom:1px solid var(--border);} .header-inner{display:flex;align-items:center;justify-content:space-between;height:72px;} .brand{font-weight:800;font-size:1.4rem;color:var(--primary);text-decoration:none;} .nav{display:flex;gap:1.1rem;} .nav a{text-decoration:none;color:#325069;font-weight:600;} .nav a.active{color:var(--primary);} .profile{font-size:1.1rem;width:36px;height:36px;border-radius:50%;background:#fff3e3;color:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:bold;} .results-page{padding:2rem 0;flex:1;} .top-summary{margin-bottom:2rem;} .badge{display:inline-flex;align-items:center;gap:.35rem;background:#fff7ed;color:#c25203;padding:.3rem .8rem;border-radius:999px;font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;} .top-summary h1{margin:.5rem 0 .35rem;font-size:2.2rem;} .top-summary p{margin:0;color:#5c6f8f;font-size:1.05rem;} .stats-grid{display:grid;grid-template-columns:1.1fr 1fr 1fr 1.2fr;gap:.95rem;margin:1.5rem 0;} .card{background:var(--surface);border:1px solid var(--border);border-radius:1rem;padding:1.25rem;box-shadow:var(--shadow);} .score-card{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.55rem;} .circle-score{width:100%;height:140px;display:flex;align-items:center;justify-content:center;position:relative;border-radius:999px;background:linear-gradient(135deg,#fff,#fff);border: 4px solid #f97316; box-shadow: 0 0 0 6px #fff4e6;} .circle-score strong{position:relative;font-size:3.5rem;color:#0f172a;z-index:1;} .circle-score span{position:relative;font-size:1.5rem;color:#1f2a42;z-index:1;} .score-card small{background:#ffefdf;color:#c25806;padding:.4rem .8rem;border-radius:9px;font-weight:700;margin-top:.5rem;} .stat-card{display:flex;flex-direction:column;justify-content:center;text-align:center;} .stat-card small{color:#94a3b8;text-transform:uppercase;letter-spacing:.08em;font-size:.72rem;font-weight:700;} .stat-card h2{margin:.5rem 0 0;font-size:1.8rem;color:#1c2e49;} .answer-card{display:flex;flex-direction:column;justify-content:center;gap:.5rem;} .answer-card div{background:#f8fbff;border:1px solid #dbe9f8;border-radius:.7rem;padding:.78rem;display:flex;justify-content:space-between;align-items:center;font-size:.95rem;} .answer-card .bonus{background:linear-gradient(120deg,var(--primary),#ff7a1f);color:#fff;padding:.6rem .75rem;border-radius:.6rem;font-weight:700;font-size:.9rem;border:none;} .actions-row{display:flex;gap:.75rem;margin-bottom:1.5rem;} .btn{transition:0.2s;border:1px solid transparent;border-radius:.75rem;padding:.78rem 1.08rem;font-weight:700;cursor:pointer;} .btn.primary{background:linear-gradient(120deg,var(--primary),#f47112);color:#fff;border-color:transparent;} .btn.primary:hover{opacity:0.9;} .btn.outline{background:#fff;color:#1f2e49;border-color:#d5e4f3;text-decoration:none;display:inline-flex;align-items:center;} .btn.outline:hover{background:#f8fafc;border-color:#cbd5e1;} .insight-block{margin-top:1.5rem;background:linear-gradient(150deg, #0f1930 0%, #12253f 100%);border-radius:1rem;padding:2rem;display:grid;grid-template-columns:1.1fr 1fr;gap:2rem;align-items:center;} .insight-text span{display:inline-block;background:#1f2f50;color:#ffb35f;padding:.3rem .8rem;border-radius:8px;font-size:.75rem;font-weight:700;letter-spacing:.06em;} .insight-text blockquote{margin:1rem 0 .5rem;color:#e5f3ff;font-size:1.15rem;line-height:1.5;border-left:4px solid #264c7f;padding-left:1rem;} .insight-text small{color:#8ca6d3;font-weight:500;} .insight-chart .chart-visual{height:164px;background:#0e1e34;border-radius:.8rem;display:flex;align-items:center;justify-content:center;color:#92b5e1;font-weight:700;border:1px solid #1e3552;} .site-footer{padding:1.5rem 0;background:#fff;border-top:1px solid var(--border);margin-top:auto;} .footer-inner{display:flex;justify-content:space-between;align-items:center;font-size:.86rem;color:#9ca6b8;} .footer-inner .links a{margin-left:1.5rem;color:#5f7ea6;text-decoration:none;font-weight:500;} @media(max-width:1080px){.stats-grid{grid-template-columns:1fr 1fr;}.insight-block{grid-template-columns:1fr;}} @media(max-width:760px){.nav{display:none;} .profile{display:none;} .stats-grid{grid-template-columns:1fr;}.results-page{padding:1.5rem 0;}.header-inner{height:auto;padding:1rem 0;}.container{width:calc(100% - 1.5rem);}.insight-block{padding:1.5rem;}.circle-score{height:120px;width:120px;margin:0 auto;}.top-summary h1{font-size:1.8rem;} .footer-inner{flex-direction:column;gap:1rem;}}
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --primary: #f97316;
+      --border: #e2e8f0;
+      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.5;
+    }
+    a { text-decoration: none; color: inherit; transition: color 0.2s; }
+    .container { width: min(1200px, calc(100% - 2rem)); margin: 0 auto; }
+
+    /* Header */
+    .page-header { background: #fff; border-bottom: 1px solid var(--border); padding: 0.75rem 0; position: sticky; top: 0; z-index: 100; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .header-inner { display: flex; align-items: center; justify-content: space-between; }
+    .brand { font-size: 1.4rem; font-weight: 800; color: var(--primary); display: flex; flex-direction: column; line-height: 1; }
+    .brand small { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.2rem; }
+    
+    .top-nav { display: flex; gap: 1.5rem; align-items: center; }
+    .top-nav a { font-weight: 600; color: #475569; font-size: 0.95rem; }
+    .top-nav a:hover, .top-nav a.active { color: var(--primary); }
+    
+    .profile-section { display: flex; align-items: center; gap: 1rem; }
+    .profile { width: 38px; height: 38px; border-radius: 50%; background: #fff4e6; color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 700; cursor: pointer; border: 2px solid transparent; transition: 0.2s; }
+    .profile:hover { border-color: var(--primary); transform: scale(1.05); } .results-page{padding:2rem 0;flex:1;} .top-summary{margin-bottom:2rem;} .badge{display:inline-flex;align-items:center;gap:.35rem;background:#fff7ed;color:#c25203;padding:.3rem .8rem;border-radius:999px;font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;} .top-summary h1{margin:.5rem 0 .35rem;font-size:2.2rem;} .top-summary p{margin:0;color:#5c6f8f;font-size:1.05rem;} .stats-grid{display:grid;grid-template-columns:1.1fr 1fr 1fr 1.2fr;gap:.95rem;margin:1.5rem 0;} .card{background:var(--surface);border:1px solid var(--border);border-radius:1rem;padding:1.25rem;box-shadow:var(--shadow);} .score-card{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.55rem;} .circle-score{width:100%;height:140px;display:flex;align-items:center;justify-content:center;position:relative;border-radius:999px;background:linear-gradient(135deg,#fff,#fff);border: 4px solid #f97316; box-shadow: 0 0 0 6px #fff4e6;} .circle-score strong{position:relative;font-size:3.5rem;color:#0f172a;z-index:1;} .circle-score span{position:relative;font-size:1.5rem;color:#1f2a42;z-index:1;} .score-card small{background:#ffefdf;color:#c25806;padding:.4rem .8rem;border-radius:9px;font-weight:700;margin-top:.5rem;} .stat-card{display:flex;flex-direction:column;justify-content:center;text-align:center;} .stat-card small{color:#94a3b8;text-transform:uppercase;letter-spacing:.08em;font-size:.72rem;font-weight:700;} .stat-card h2{margin:.5rem 0 0;font-size:1.8rem;color:#1c2e49;} .answer-card{display:flex;flex-direction:column;justify-content:center;gap:.5rem;} .answer-card div{background:#f8fbff;border:1px solid #dbe9f8;border-radius:.7rem;padding:.78rem;display:flex;justify-content:space-between;align-items:center;font-size:.95rem;} .answer-card .bonus{background:linear-gradient(120deg,var(--primary),#ff7a1f);color:#fff;padding:.6rem .75rem;border-radius:.6rem;font-weight:700;font-size:.9rem;border:none;} .actions-row{display:flex;gap:.75rem;margin-bottom:1.5rem;} .btn{transition:0.2s;border:1px solid transparent;border-radius:.75rem;padding:.78rem 1.08rem;font-weight:700;cursor:pointer;} .btn.primary{background:linear-gradient(120deg,var(--primary),#f47112);color:#fff;border-color:transparent;} .btn.primary:hover{opacity:0.9;} .btn.outline{background:#fff;color:#1f2e49;border-color:#d5e4f3;text-decoration:none;display:inline-flex;align-items:center;} .btn.outline:hover{background:#f8fafc;border-color:#cbd5e1;} .insight-block{margin-top:1.5rem;background:linear-gradient(150deg, #0f1930 0%, #12253f 100%);border-radius:1rem;padding:2rem;display:grid;grid-template-columns:1.1fr 1fr;gap:2rem;align-items:center;} .insight-text span{display:inline-block;background:#1f2f50;color:#ffb35f;padding:.3rem .8rem;border-radius:8px;font-size:.75rem;font-weight:700;letter-spacing:.06em;} .insight-text blockquote{margin:1rem 0 .5rem;color:#e5f3ff;font-size:1.15rem;line-height:1.5;border-left:4px solid #264c7f;padding-left:1rem;} .insight-text small{color:#8ca6d3;font-weight:500;} .insight-chart .chart-visual{height:164px;background:#0e1e34;border-radius:.8rem;display:flex;align-items:center;justify-content:center;color:#92b5e1;font-weight:700;border:1px solid #1e3552;} .site-footer{padding:1.5rem 0;background:#fff;border-top:1px solid var(--border);margin-top:auto;} .footer-inner{display:flex;justify-content:space-between;align-items:center;font-size:.86rem;color:#9ca6b8;} .footer-inner .links a{margin-left:1.5rem;color:#5f7ea6;text-decoration:none;font-weight:500;} @media(max-width:1080px){.stats-grid{grid-template-columns:1fr 1fr;}.insight-block{grid-template-columns:1fr;}} @media(max-width:760px){.nav{display:none;} .profile{display:none;} .stats-grid{grid-template-columns:1fr;}.results-page{padding:1.5rem 0;}.header-inner{height:auto;padding:1rem 0;}.container{width:calc(100% - 1.5rem);}.insight-block{padding:1.5rem;}.circle-score{height:120px;width:120px;margin:0 auto;}.top-summary h1{font-size:1.8rem;} .footer-inner{flex-direction:column;gap:1rem;}}
   </style>
 </head>
 <body>
-  <header class="site-header">
+  <header class="page-header">
     <div class="container header-inner">
-      <a href="dashboard.html" class="brand">QuizzBox</a>
-      <nav class="nav">
-        <a href="dashboard.html">Dashboard</a>
+      <a href="dashboard.html" class="brand">
+        QuizzBox <strong>Admin</strong>
+        <small>Clinical Evaluation Suite</small>
+      </a>
+      <nav class="top-nav">
+        <a href="index.html">Home</a>
+        <a href="dashboard.html">Overview</a>
+        <a href="my-evaluations.html">Assessments</a>
+        <a href="results.html" class="active">Analytics</a>
         <a href="create.html">Create</a>
         <a href="join.html">Join</a>
-        <a class="active" href="results.html">Results</a>
       </nav>
-      <div class="profile" id="user-initial">U</div>
+      <div class="profile-section">
+        <div class="profile" id="user-initial" title="Click to Logout">U</div>
+      </div>
     </div>
   </header>
 
@@ -42,6 +84,8 @@
     </div>
   </footer>
 
+  <script src="js/results.js" type="module"></script>
+
   <script type="module">
     import api from './js/api.js';
 
@@ -57,50 +101,91 @@
       } catch (e) { /* ignore */ }
     }
 
-    // ── Get sessionId from URL ──────────────────────────────────────────────
-    const params    = new URLSearchParams(window.location.search);
-    const sessionId = params.get('session');
-    const content   = document.getElementById('results-content');
+    // Logout logic 
+    document.getElementById('user-initial').addEventListener('click', () => {
+      localStorage.removeItem('quizzbox_token');
+      localStorage.removeItem('quizzbox_user');
+      window.location.replace('login.html');
+    });
+
+    // ── Get params from URL ──────────────────────────────────────────────
+    const params       = new URLSearchParams(window.location.search);
+    const sessionId    = params.get('session');
+    const evaluationId = params.get('evaluationId');
+    const content      = document.getElementById('results-content');
 
     function renderError(msg) {
       content.innerHTML = `
-        <div class="error-box">
-          <p>😕 ${msg}</p>
-          <a href="dashboard.html" class="btn outline" style="margin-top:1rem;display:inline-flex;">
+        <div class="error-box" style="text-align:center; padding: 4rem 2rem;">
+          <p style="font-size: 1.2rem; color: var(--muted); margin-bottom: 2rem;">😕 ${msg}</p>
+          <a href="dashboard.html" class="btn outline" style="display:inline-flex; border: 1px solid var(--border); padding: 0.8rem 1.5rem; border-radius: 0.75rem; font-weight: 700;">
             ← Retour au Dashboard
           </a>
         </div>`;
     }
 
-    function getGrade(score) {
-      if (score >= 90) return { label: 'Excellent 🏆', insight: 'Performance exceptionnelle ! Vous maîtrisez parfaitement ce module.' };
-      if (score >= 75) return { label: 'Très bien 👍', insight: 'Bonne maîtrise du contenu. Quelques révisions ciblées vous mèneront à l\'excellence.' };
-      if (score >= 60) return { label: 'Passable ✅',   insight: 'Vous avez les bases. Revoyez les questions manquées pour consolider vos acquis.' };
-      return                  { label: 'À revoir 📚',  insight: 'Ce module nécessite de la révision. Ne vous découragez pas — continuez à pratiquer !' };
-    }
+    async function loadAdminResults(evalId) {
+      try {
+        const ev = await api.evaluations.get(evalId);
+        content.innerHTML = `
+          <section class="top-summary">
+            <span class="badge" style="background: #eff6ff; color: #1e40af;">Vue Admin</span>
+            <h1>Analyse : ${ev.title}</h1>
+            <p>Résumé des performances pour cette évaluation clinique.</p>
+          </section>
 
-    function buildBars(score) {
-      // Simple visual breakdown bar chart
-      const bars = [
-        Math.min(score + 10, 100),
-        score,
-        Math.max(score - 8, 0),
-        Math.max(score - 20, 0),
-        Math.max(score - 30, 0),
-      ];
-      return bars.map(h => `<div class="chart-bar" style="height:${h}%"></div>`).join('');
+          <section class="stats-grid">
+            <article class="card stat-card">
+              <small>Questions</small>
+              <h2>${ev._count.questions}</h2>
+            </article>
+            <article class="card stat-card">
+              <small>Visibilité</small>
+              <h2>${ev.visibility === 'SHARED' ? 'Partagée' : 'Privée'}</h2>
+            </article>
+            <article class="card stat-card">
+              <small>Code Accès</small>
+              <h2>${ev.accessCode || '—'}</h2>
+            </article>
+            <article class="card stat-card">
+              <small>Temps / Q</small>
+              <h2>${ev.timePerQuestion}s</h2>
+            </article>
+          </section>
+
+          <section class="insight-block" style="background: var(--surface); border: 1px solid var(--border); color: var(--text);">
+            <div class="insight-text">
+              <span style="background: #f1f5f9; color: #475569;">Prochaine étape</span>
+              <blockquote style="color: var(--text); border-color: var(--primary);">
+                Le suivi individuel des sessions étudiants sera bientôt disponible ici.
+              </blockquote>
+              <small>Vous pourrez bientôt voir qui a répondu et quels sont leurs scores.</small>
+            </div>
+          </section>
+
+          <section class="actions-row" style="margin-top: 2rem;">
+            <a href="dashboard.html" class="btn outline" style="border: 1px solid var(--border); padding: 0.8rem 1.5rem; border-radius: 0.75rem; font-weight: 700;">← Retour</a>
+            <a href="create.html?edit=${ev.id}" class="btn primary" style="background: var(--primary); color:#fff; padding: 0.8rem 1.5rem; border-radius: 0.75rem; font-weight: 700;">Modifier l'évaluation</a>
+          </section>
+        `;
+      } catch (err) {
+        renderError("Impossible de charger les détails de l'évaluation.");
+      }
     }
 
     async function loadResults() {
+      if (evaluationId) {
+        await loadAdminResults(evaluationId);
+        return;
+      }
+
       if (!sessionId) {
-        renderError('Aucune session spécifiée. Revenez depuis une évaluation complète.');
+        renderError('Aucune session ou évaluation spécifiée.');
         return;
       }
 
       try {
         const result = await api.session.getResult(sessionId);
-        // result = { score, totalQuestions, correctAnswersCount }
-
         const score    = result.score           ?? 0;
         const total    = result.totalQuestions  ?? 0;
         const correct  = result.correctAnswersCount ?? 0;
@@ -119,7 +204,7 @@
               <div class="circle-score">
                 <strong>${correct}</strong><span>/${total}</span>
               </div>
-              <div class="score-label">${label}</div>
+              <div class="score-label" style="font-weight: 700; margin-top: 0.5rem; color: var(--primary);">${label}</div>
             </article>
 
             <article class="card stat-card">
@@ -133,21 +218,20 @@
             </article>
 
             <article class="card answer-card">
-              <div class="row correct">
+              <div class="row" style="display:flex; justify-content: space-between; margin-bottom: 0.5rem;">
                 <strong>Correctes</strong>
-                <span class="correct-val">✓ ${correct}</span>
+                <span class="correct-val" style="color: #059669; font-weight: 700;">✓ ${correct}</span>
               </div>
-              <div class="row incorrect">
+              <div class="row" style="display:flex; justify-content: space-between;">
                 <strong>Incorrectes</strong>
-                <span class="incorrect-val">✗ ${wrong}</span>
+                <span class="incorrect-val" style="color: #dc2626; font-weight: 700;">✗ ${wrong}</span>
               </div>
-              <div class="score-pct">${score}% de réussite</div>
             </article>
           </section>
 
           <section class="actions-row">
-            <a href="join.html" class="btn primary">Refaire une évaluation</a>
-            <a href="dashboard.html" class="btn outline">← Retour au Dashboard</a>
+            <a href="join.html" class="btn primary" style="background: var(--primary); color:#fff; padding: 0.8rem 1.5rem; border-radius: 0.75rem; font-weight: 700;">Refaire une évaluation</a>
+            <a href="dashboard.html" class="btn outline" style="border: 1px solid var(--border); padding: 0.8rem 1.5rem; border-radius: 0.75rem; font-weight: 700;">← Retour au Dashboard</a>
           </section>
 
           <section class="insight-block">
@@ -157,8 +241,8 @@
               <small>Analyse automatique de vos résultats</small>
             </div>
             <div class="insight-chart">
-              <div class="chart-bar-wrap">
-                ${buildBars(score)}
+              <div class="chart-bar-wrap" style="display:flex; gap: 0.5rem; align-items: flex-end; height: 100px;">
+                ${buildBars(score).replace(/chart-bar/g, 'chart-bar" style="background: var(--primary); width: 20px; border-radius: 4px;')}
               </div>
             </div>
           </section>`;

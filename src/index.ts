@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
 import path from 'path';
+import os from 'os';
 
 import authRoutes from './routes/auth.routes';
 import evaluationRoutes from './routes/evaluation.routes';
@@ -16,14 +17,26 @@ import { requestLogger } from './middlewares/logger.middleware';
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = Number(process.env.PORT) || 3000;
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
 // 🔒 Sécurité
 app.use(helmet());
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:8080',
+  origin: process.env.NODE_ENV === 'production' 
+    ? (process.env.FRONTEND_URL || 'http://localhost:8080')
+    : '*',
   credentials: true
+}));
+
+// Custom CSP configuration to allow external scripts
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'"] // Allow scripts from the same origin
+    }
+  }
 }));
 
 // 🚦 Rate limiting
@@ -77,13 +90,31 @@ app.use((_req: Request, res: Response) => {
 app.use(errorHandler);
 
 // 🚀 Démarrage du serveur
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
+  // Détection dynamique de l'IP locale
+  const networkInterfaces = os.networkInterfaces();
+  let LOCAL_IP = 'localhost';
+  
+  for (const interfaceName in networkInterfaces) {
+    const interfaces = networkInterfaces[interfaceName];
+    if (interfaces) {
+      for (const iface of interfaces) {
+        if (iface.family === 'IPv4' && !iface.internal) {
+          LOCAL_IP = iface.address;
+          break;
+        }
+      }
+    }
+    if (LOCAL_IP !== 'localhost') break;
+  }
+
   console.log('🧠 QuizzBox Backend');
   console.log('====================');
   console.log(`📡 Environnement: ${NODE_ENV}`);
   console.log(`🌐 Port: ${PORT}`);
-  console.log(`🔗 API: http://localhost:${PORT}/api`);
-  console.log(`🏥 Health: http://localhost:${PORT}/health`);
+  console.log(`🏠 Local: http://localhost:${PORT}`);
+  console.log(`🔗 Réseau: http://${LOCAL_IP}:${PORT}`);
+  console.log(`🏥 Health: http://${LOCAL_IP}:${PORT}/health`);
   console.log('====================');
 });
 
