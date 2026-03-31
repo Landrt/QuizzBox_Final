@@ -25,7 +25,19 @@ evaluationRoutes.post('/', authMiddleware, async (req: AuthRequest, res: Respons
     const evaluation = await createEvaluation(req.userId!, {
       title, description, numQuestions, timePerQuestion, mode, visibility,
     });
-    res.status(201).json(evaluation);
+
+    // Générer un code d'accès si l'évaluation est en mode partagé
+    let accessCode = null;
+    if (visibility === 'SHARED') {
+      const result = await generateAccessCode(evaluation.id, req.userId!);
+      accessCode = result.accessCode;
+    }
+
+    res.status(201).json({
+      message: 'Évaluation créée avec succès !',
+      evaluation,
+      accessCode,
+    });
   } catch (err: any) {
     res.status(400).json({ message: err.message });
   }

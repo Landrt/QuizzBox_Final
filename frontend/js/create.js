@@ -200,11 +200,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     mode: 'MANUAL',
                     visibility
                 };
+
                 const newEval = await api.evaluations.create(evalData);
-                
                 // 2. Create Questions
                 for (const q of questions) {
-                    await api.questions.create(newEval.id, q);
+                    await api.questions.create(newEval.evaluation.id, q);
                 }
 
                 alert('Évaluation créée avec succès !');
@@ -275,4 +275,39 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // Fonction pour générer un code d'accès
+    async function generateAccessCode(evaluationId) {
+        try {
+            const response = await fetch(`/api/evaluation/${evaluationId}/generate-code`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem('quizzbox_token')}`,
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Erreur lors de la génération du code d\'accès.');
+            }
+
+            const data = await response.json();
+            displayAccessCode(data.accessCode);
+        } catch (error) {
+            console.error('Erreur:', error);
+            alert('Impossible de générer le code d\'accès.');
+        }
+    }
+
+    // Fonction pour afficher le code d'accès dans l'interface utilisateur
+    function displayAccessCode(accessCode) {
+        const accessCodeContainer = document.getElementById('access-code-container');
+        if (accessCodeContainer) {
+            accessCodeContainer.textContent = `Code d'accès: ${accessCode}`;
+            accessCodeContainer.style.display = 'block';
+        }
+    }
+
+    // Exemple d'utilisation (à appeler après la création d'une évaluation)
+    // generateAccessCode('<evaluationId>');
 });
