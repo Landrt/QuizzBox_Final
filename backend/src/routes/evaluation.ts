@@ -9,6 +9,7 @@ import {
   deleteEvaluation,
   createQuestion,
   getQuestions,
+  deleteQuestion,
 } from '../services/evaluation.service';
 
 const evaluationRoutes = Router();
@@ -111,6 +112,17 @@ evaluationRoutes.get('/:id/questions', authMiddleware, async (req: AuthRequest, 
     res.json(questions);
   } catch (err: any) {
     res.status(500).json({ message: err.message });
+  }
+});
+
+// Delete question
+evaluationRoutes.delete('/question/:id', authMiddleware, async (req: AuthRequest, res: Response) => {
+  try {
+    const questionId = req.params.id;
+    await deleteQuestion(questionId, req.userId!);
+    res.status(204).send();
+  } catch (err: any) {
+    res.status(400).json({ message: err.message });
   }
 });
 

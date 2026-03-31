@@ -41,70 +41,40 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (userInitial) userInitial.textContent = (user.name || user.fullName || 'U').charAt(0).toUpperCase();
     }
 
-    function renderEvaluations(evals) {
+    function renderEvaluations(evaluations) {
         if (!evalsContainer) return;
 
-        evalsContainer.innerHTML = `
-            <article class="eval-card create-card" id="create-new-card">
-                <div class="icon">+</div>
-                <h3>Créer une évaluation</h3>
-                <p>Créer un nouveau module d'évaluation clinique</p>
+        evalsContainer.innerHTML = evaluations.map(evaluation => `
+            <article class="eval-card">
+                <h3>${evaluation.title}</h3>
+                <p>${evaluation.description || 'Pas de description disponible.'}</p>
+                <div class="actions">
+                    <button class="btn-launch" data-id="${evaluation.id}">Lancer</button>
+                    <button class="btn-edit" data-id="${evaluation.id}">Modifier</button>
+                </div>
             </article>
-        `;
+        `).join('');
 
-        // Re-attach create card click
-        document.getElementById('create-new-card').addEventListener('click', () => {
-            window.location.href = 'create.html';
+        // Ajout des événements pour les boutons dynamiques
+        document.querySelectorAll('.btn-launch').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const evalId = e.target.dataset.id;
+                window.location.href = `session.html?id=${evalId}`;
+            });
         });
 
-        if (evals.length === 0) return;
-
-        evals.forEach(ev => {
-            const isShared = ev.visibility === 'SHARED' || ev.visibility === 'PUBLIC';
-            const card = document.createElement('article');
-            card.className = 'eval-card animate-fade';
-            card.innerHTML = `
-                <span class="badge ${isShared ? 'shared' : 'private'}">${isShared ? 'Partagée' : 'Privée'}</span>
-                <h3>${ev.title}</h3>
-                <p>${ev.description || 'Aucune description fournie.'}</p>
-                <div class="card-footer">
-                    <span>Questions: <strong>${ev._count?.questions ?? ev.numQuestions ?? 0}</strong></span>
-                    <span>Code: <strong id="code-${ev.id}">${ev.accessCode || '—'}</strong></span>
-                </div>
-                <div class="card-actions">
-                    <a href="session.html?id=${ev.id}" class="card-action-link">🚀 Lancer</a>
-                    <a href="create.html?edit=${ev.id}" class="card-action-link" style="color: #64748b;">✏️ Modifier</a>
-                    <a href="#" class="card-action-link generate-code-btn" data-eval-id="${ev.id}" style="color: #0369a1;">🔑 Code</a>
-                </div>
-            `;
-            evalsContainer.appendChild(card);
-        });
-
-        // Attach generate-code button listeners
-        document.querySelectorAll('.generate-code-btn').forEach(btn => {
-            btn.addEventListener('click', async (e) => {
-                e.preventDefault();
-                const evalId = btn.getAttribute('data-eval-id');
-                btn.textContent = '⏳...';
-                try {
-                    const result = await api.evaluations.generateCode(evalId);
-                    const codeEl = document.getElementById(`code-${evalId}`);
-                    if (codeEl) codeEl.textContent = result.accessCode;
-                    btn.textContent = '✅ Copié !';
-                    navigator.clipboard.writeText(result.accessCode).catch(() => {});
-                    setTimeout(() => { btn.textContent = '🔑 Code'; }, 2000);
-                } catch (err) {
-                    alert('Erreur : ' + err.message);
-                    btn.textContent = '🔑 Code';
-                }
+        document.querySelectorAll('.btn-edit').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const evalId = e.target.dataset.id;
+                window.location.href = `edit.html?id=${evalId}`;
             });
         });
     }
 
-    function updateStats(evals) {
-        if (totalEvalsEl) totalEvalsEl.textContent = evals.length;
-        if (sharedEvalsEl) sharedEvalsEl.textContent = evals.filter(e => e.visibility === 'SHARED' || e.visibility === 'PUBLIC').length;
-        if (privateEvalsEl) privateEvalsEl.textContent = evals.filter(e => e.visibility === 'PRIVATE' || !e.visibility).length;
+    function updateStats(evaluations) {
+        if (totalEvalsEl) totalEvalsEl.textContent = evaluations.length;
+        if (sharedEvalsEl) sharedEvalsEl.textContent = evaluations.filter(e => e.visibility === 'SHARED' || e.visibility === 'PUBLIC').length;
+        if (privateEvalsEl) privateEvalsEl.textContent = evaluations.filter(e => e.visibility === 'PRIVATE' || !e.visibility).length;
     }
 
     // --- Listeners ---
@@ -125,6 +95,45 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (newEvalBtn) {
         newEvalBtn.addEventListener('click', () => {
             window.location.href = 'create.html';
+        });
+    }
+
+    // Gestionnaire pour le bouton "+ Nouvelle évaluation"
+    const createNewCard = document.getElementById('create-new-card');
+    if (createNewCard) {
+        createNewCard.addEventListener('click', () => {
+            window.location.href = 'create.html';
+        });
+    }
+
+    // Gestionnaires pour les boutons dynamiques des évaluations
+    function renderEvaluations(evaluations) {
+        if (!evalsContainer) return;
+
+        evalsContainer.innerHTML = evaluations.map(evaluation => `
+            <article class="eval-card">
+                <h3>${evaluation.title}</h3>
+                <p>${evaluation.description || 'Pas de description disponible.'}</p>
+                <div class="actions">
+                    <button class="btn-launch" data-id="${evaluation.id}">Lancer</button>
+                    <button class="btn-edit" data-id="${evaluation.id}">Modifier</button>
+                </div>
+            </article>
+        `).join('');
+
+        // Ajout des événements pour les boutons dynamiques
+        document.querySelectorAll('.btn-launch').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const evalId = e.target.dataset.id;
+                window.location.href = `session.html?id=${evalId}`;
+            });
+        });
+
+        document.querySelectorAll('.btn-edit').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const evalId = e.target.dataset.id;
+                window.location.href = `edit.html?id=${evalId}`;
+            });
         });
     }
 

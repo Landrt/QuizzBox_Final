@@ -111,3 +111,21 @@ export async function getQuestions(evaluationId: string) {
     include: { options: true },
   });
 }
+
+export async function deleteQuestion(questionId: string, userId: string) {
+  // Vérifier si la question existe
+  const question = await prisma.question.findUnique({ where: { id: questionId } });
+  if (!question) throw new Error('Question introuvable.');
+
+  // Vérifier si l'utilisateur est le créateur de l'évaluation associée
+  const evaluation = await prisma.evaluation.findUnique({ where: { id: question.evaluationId } });
+  if (!evaluation || evaluation.creatorId !== userId) {
+    throw new Error('Non autorisé à supprimer cette question.');
+  }
+
+  // Supprimer les réponses utilisateur associées à cette question
+  await prisma.userAnswer.deleteMany({ where: { questionId } });
+
+  // Supprimer la question
+  return prisma.question.delete({ where: { id: questionId } });
+}

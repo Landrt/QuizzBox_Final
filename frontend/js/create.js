@@ -79,20 +79,82 @@ document.addEventListener('DOMContentLoaded', () => {
         qEl.innerHTML = `
             <div class="question-top">
                 <span>Question #${index + 1}</span>
-                <button class="btn light" style="padding: 0.2rem 0.5rem; font-size: 0.7rem;" onclick="this.closest('.question-card').remove()">Supprimer</button>
+                <button class="btn light btn-delete" style="padding: 0.2rem 0.5rem; font-size: 0.7rem;">Supprimer</button>
             </div>
-            <textarea placeholder="Quelle est votre question ?" oninput="window.updateQuestionText(${index}, this.value)">${q.text}</textarea>
+            <textarea placeholder="Quelle est votre question ?">${q.text}</textarea>
             <div class="answers-row">
                 ${q.answers.map((ans, aIdx) => `
-                    <div class="answer" onclick="window.toggleCorrect(${index}, ${aIdx}, this)">
-                        <input type="checkbox" ${ans.isCorrect ? 'checked' : ''} onchange="window.toggleCorrect(${index}, ${aIdx}, this.parentElement)" />
-                        <input type="text" class="answer-text" placeholder="Option ${aIdx + 1}" value="${ans.text}" oninput="window.updateAnswerText(${index}, ${aIdx}, this.value)" />
+                    <div class="answer">
+                        <input type="checkbox" ${ans.isCorrect ? 'checked' : ''} />
+                        <input type="text" class="answer-text" placeholder="Option ${aIdx + 1}" value="${ans.text}" />
                     </div>
                 `).join('')}
             </div>
         `;
         questionsContainer.appendChild(qEl);
+
+        // Ajouter les gestionnaires d'événements dynamiquement
+        qEl.querySelector('.btn-delete').addEventListener('click', () => {
+            qEl.remove();
+            questions.splice(index, 1);
+            updateProgress();
+        });
+
+        qEl.querySelectorAll('.answer input[type=checkbox]').forEach((checkbox, aIdx) => {
+            checkbox.addEventListener('change', () => {
+                toggleCorrect(index, aIdx);
+            });
+        });
+
+        qEl.querySelectorAll('.answer-text').forEach((input, aIdx) => {
+            input.addEventListener('input', (e) => {
+                updateAnswerText(index, aIdx, e.target.value);
+            });
+        });
     }
+
+    function toggleCorrect(qIndex, aIndex) {
+        questions[qIndex].answers.forEach((ans, idx) => {
+            ans.isCorrect = idx === aIndex;
+        });
+        renderQuestions();
+    }
+
+    function updateAnswerText(qIndex, aIndex, text) {
+        questions[qIndex].answers[aIndex].text = text;
+    }
+
+    // Gestionnaire pour supprimer une question dynamiquement
+    function addDeleteQuestionListeners() {
+        document.querySelectorAll('.question-card .btn-delete').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const questionCard = e.target.closest('.question-card');
+                if (questionCard) questionCard.remove();
+            });
+        });
+    }
+
+    // Gestionnaire pour marquer une réponse comme correcte
+    function addToggleCorrectListeners() {
+        document.querySelectorAll('.answer').forEach(answer => {
+            answer.addEventListener('click', (e) => {
+                const target = e.currentTarget;
+                target.classList.toggle('selected');
+            });
+        });
+    }
+
+    // Appeler les gestionnaires après le rendu des questions dynamiques
+    function renderQuestions() {
+        // ...code pour générer les questions dynamiquement...
+
+        // Ajouter les gestionnaires après le rendu
+        addDeleteQuestionListeners();
+        addToggleCorrectListeners();
+    }
+
+    // Appeler renderQuestions après chaque modification
+    renderQuestions();
 
     // Public helpers for inline handlers
     window.updateQuestionText = (qIdx, text) => { questions[qIdx].text = text; };

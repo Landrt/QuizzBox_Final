@@ -114,24 +114,16 @@
 
   <main class="container main-content">
     <section class="hero-section">
-      <h1>Bienvenue, <span id="user-greeting">Utilisateur</span></h1>
-      <p>Gérez vos évaluations, surveillez les progrès et analysez les résultats cliniques.</p>
+      <h1>Bienvenue sur votre Dashboard</h1>
+      <p>Gérez vos évaluations et suivez vos progrès.</p>
     </section>
 
-    <div class="search-row">
-      <div class="search-input-wrap">
-        <input id="search-input" placeholder="Rechercher par titre ou description..." />
-      </div>
-      <button class="btn primary" id="new-eval-btn">+ Nouvelle évaluation</button>
-    </div>
-
-    <section class="cards-grid" id="evaluations-container">
-      <!-- To be populated -->
-      <article class="eval-card create-card" id="create-new-card">
-        <div class="icon">+</div>
-        <h3>Créer une évaluation</h3>
-        <p>Créer un nouveau module d'évaluation clinique</p>
-      </article>
+    <section id="evaluations-container" class="evaluations">
+        <!-- Les évaluations seront chargées ici dynamiquement -->
+        <article class="eval-card create-card" id="create-new-card">
+            <div class="icon">+</div>
+            <h3>Créer une évaluation</h3>
+        </article>
     </section>
 
     <section class="stats-banner">
