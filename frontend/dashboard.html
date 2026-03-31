@@ -68,7 +68,8 @@
     .card-footer { border-top: 1px solid var(--border); padding-top: 1rem; margin-top: 1rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: var(--muted); font-weight: 500; }
     .card-footer strong { color: var(--text); }
     .card-actions { display: flex; gap: 1rem; margin-top: 1.25rem; }
-    .card-actions a { color: var(--primary); font-weight: 700; font-size: 0.9rem; }
+    .card-actions a, .card-action-link { color: var(--primary); font-weight: 700; font-size: 0.9rem; text-decoration: none; }
+    .card-actions a:hover, .card-action-link:hover { text-decoration: underline; }
 
     .create-card { border: 2px dashed var(--border); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: var(--muted); cursor: pointer; min-height: 200px; background: transparent; box-shadow: none; }
     .create-card:hover { border-color: var(--primary); color: var(--primary); background: #fff; }
@@ -121,12 +122,12 @@
       <div class="search-input-wrap">
         <input id="search-input" placeholder="Rechercher par titre ou description..." />
       </div>
-      <button class="btn primary" onclick="window.location.href='create.html'">+ Nouvelle évaluation</button>
+      <button class="btn primary" id="new-eval-btn">+ Nouvelle évaluation</button>
     </div>
 
     <section class="cards-grid" id="evaluations-container">
       <!-- To be populated -->
-      <article class="eval-card create-card" onclick="window.location.href='create.html'">
+      <article class="eval-card create-card" id="create-new-card">
         <div class="icon">+</div>
         <h3>Créer une évaluation</h3>
         <p>Créer un nouveau module d'évaluation clinique</p>
